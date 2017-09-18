@@ -1,10 +1,10 @@
 # This script is to make a basic configuration for the server.
 #
 # You can verify your IP addresses configurations with:
-# Use netsh interface ipv4 show addresses
+# `netsh interface ipv4 show addresses`
 #
 # You can verify your DNS server addresses configurations with:
-# Use netsh interface ipv4 show dnsservers
+# `netsh interface ipv4 show dnsservers`
 Param(    
     [string]$Name,
     [string]$InterfaceIndex = "5",
