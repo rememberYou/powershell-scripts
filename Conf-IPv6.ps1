@@ -1,4 +1,4 @@
-# This script is to make a basic configuration for the server.
+# This script is to make a basic IPv6 configuration for the server.
 #
 # You can verify your IP addresses configurations with:
 # `netsh interface ipv6 show addresses`
