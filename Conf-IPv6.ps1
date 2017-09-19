@@ -10,7 +10,7 @@ Param(
     [string]$InterfaceIndex = "5",
     [string]$IP = "ACAD::10",
     [string]$Length = "64",
-    [string]$Gateway = "ACAD:0:0:0:0:0:0:11",
+    [string]$Gateway = "FE80::1",
     [string]$DnsSec = "ACAD::11"
 )
 
