@@ -20,10 +20,13 @@ $RevZoneName="120.16.172.in-addr.arpa"
 Add-DnsServerPrimaryZone -NetworkID "$NetworkID/$Prefix" -ZoneFile "$RevZoneName.dns"
 
 # Create Records
-$Name="SRVDNSPrimary"
-Add-DnsServerResourceRecordA -Name "$Name" -ZoneName "$ZoneName" -AllowUpdateAny -IPv4Address 172.16.0.10 -CreatePtr
-Add-DnsServerResourceRecordAAAA -Name "$Name" -ZoneName "$ZoneName" -AllowUpdateAny -IPv6Address ACAD::10 -CreatePtr 
+$SRVPrimary="SRVDNSPrimary"
+Add-DnsServerResourceRecordA -Name "$SRVPrimary" -ZoneName "$ZoneName" -AllowUpdateAny -IPv4Address "172.16.0.10" -CreatePtr
+Add-DnsServerResourceRecordAAAA -Name "$SRVPrimary" -ZoneName "$ZoneName" -AllowUpdateAny -IPv6Address "ACAD::10" -CreatePtr 
 
-$Name="SRVDNSSecondary"
-Add-DnsServerResourceRecordA -Name "$Name" -ZoneName "$ZoneName" -AllowUpdateAny -IPv4Address 172.16.0.11 -CreatePtr
-Add-DnsServerResourceRecordAAAA -Name "$Name" -ZoneName "$ZoneName" -AllowUpdateAny -IPv6Address ACAD::11 -CreatePtr
+$SRVSecondary="SRVDNSSecondary"
+Add-DnsServerResourceRecordA -Name "$SRVSecondary" -ZoneName "$ZoneName" -AllowUpdateAny -IPv4Address "172.16.0.11" -CreatePtr
+Add-DnsServerResourceRecordAAAA -Name "$SRVSecondary" -ZoneName "$ZoneName" -AllowUpdateAny -IPv6Address "ACAD::11" -CreatePtr
+
+# Create Alias
+Add-DnsServerResourceRecordCName -Name "www" -HostNameAlias "$SRVPrimary.$ZoneName" -ZoneName "$ZoneName"
