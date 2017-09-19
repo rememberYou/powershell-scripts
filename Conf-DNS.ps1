@@ -19,9 +19,11 @@ $Prefix="24"
 $RevZoneName="120.16.172.in-addr.arpa"
 Add-DnsServerPrimaryZone -NetworkID "$NetworkID/$Prefix" -ZoneFile "$RevZoneName.dns"
 
-# Create A Records
+# Create Records
 $Name="SRVDNSPrimary"
-Add-DnsServerResourceRecordA -Name "$Name" -ZoneName "$ZoneName" -AllowUpdateAny -IPv4Address 172.16.0.10 -CreatePtr 
+Add-DnsServerResourceRecordA -Name "$Name" -ZoneName "$ZoneName" -AllowUpdateAny -IPv4Address 172.16.0.10 -CreatePtr
+Add-DnsServerResourceRecordAAAA -Name "$Name" -ZoneName "$ZoneName" -AllowUpdateAny -IPv6Address ACAD::10 -CreatePtr 
 
 $Name="SRVDNSSecondary"
 Add-DnsServerResourceRecordA -Name "$Name" -ZoneName "$ZoneName" -AllowUpdateAny -IPv4Address 172.16.0.11 -CreatePtr
+Add-DnsServerResourceRecordAAAA -Name "$Name" -ZoneName "$ZoneName" -AllowUpdateAny -IPv6Address ACAD::11 -CreatePtr
