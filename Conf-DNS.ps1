@@ -1,8 +1,27 @@
 # This script is to make the DNS configuration for the server.
 #
-# You can verify your IP addresses configurations with:
+# You can verify the DNS installation with:
 # `Get-WindowsFeature`
-Import-Module Servermanager
-Add-WindowsFeature 'DNS' -restart
+#
+# You can verify the DNS zones with:
+# `Get-DnsServerZone`
 
-# Add-DnsServerPrimaryZone -Name primaryzone.heh.lan -ReplicationScope Forest
+Import-Module ServerManager
+Add-WindowsFeature -Name DNS -IncludeManagementTools
+
+# Create Forward Lookup Zones
+$ZoneName="heh.lan"
+Add-DnsServerPrimaryZone -Name "$ZoneName" -ZoneFile "$ZoneName.dns"
+
+# Create Reverse Lookup Zones
+$NetworkID="172.16.120.0"
+$Prefix="24"
+$RevZoneName="120.16.172.in-addr.arpa"
+Add-DnsServerPrimaryZone -NetworkID "$NetworkID/$Prefix" -ZoneFile "$RevZoneName.dns"
+
+# Create A Records
+$Name="SRVDNSPrimary"
+Add-DnsServerResourceRecordPtr -Name "$Name" -ZoneName "$ZoneName" -AllowUpdateAny -IPv4Address 172.16.0.10 -CreatePtr 
+
+$Name="SRVDNSSecondary"
+Add-DnsServerResourceRecordPtr -Name "$Name" -ZoneName "$ZoneName" -AllowUpdateAny -IPv4Address 172.16.0.11 -CreatePtr
