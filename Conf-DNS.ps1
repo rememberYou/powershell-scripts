@@ -21,7 +21,7 @@ Add-DnsServerPrimaryZone -NetworkID "$NetworkID/$Prefix" -ZoneFile "$RevZoneName
 
 # Create A Records
 $Name="SRVDNSPrimary"
-Add-DnsServerResourceRecordPtr -Name "$Name" -ZoneName "$ZoneName" -AllowUpdateAny -IPv4Address 172.16.0.10 -CreatePtr 
+Add-DnsServerResourceRecordA -Name "$Name" -ZoneName "$ZoneName" -AllowUpdateAny -IPv4Address 172.16.0.10 -CreatePtr 
 
 $Name="SRVDNSSecondary"
-Add-DnsServerResourceRecordPtr -Name "$Name" -ZoneName "$ZoneName" -AllowUpdateAny -IPv4Address 172.16.0.11 -CreatePtr
+Add-DnsServerResourceRecordA -Name "$Name" -ZoneName "$ZoneName" -AllowUpdateAny -IPv4Address 172.16.0.11 -CreatePtr
