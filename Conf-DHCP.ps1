@@ -1,6 +1,6 @@
 # This script is to make the DHCP configuration for the server.
 #
-# You can verify your IP addresses configurations with:
+# You can verify the DHCP installation with:
 # `Get-WindowsFeature`
-Import-Module Servermanager
-Add-WindowsFeature 'DHCP' -restart
+Import-Module ServerManagement
+Add-WindowsFeature -Name DHCP -IncludeManagementTools
