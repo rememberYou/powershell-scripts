@@ -1,7 +1,23 @@
-# This script is to make the firewall configuration for the server.
-#
-# You can verify if the rule is enabled with:
-# Get-NetFirewallRule -DisplayGroup "File And Printer Sharing"
+<#
+.SYNOPSIS
+    Sets a basic firewall configuration.
+    PowerSploit Function: Conf-Firewall
+    Author: Terencio Agozzino (@rememberYou)
+    License: None
+    Required Dependencies: None
+    Optional Dependencies: None
+    Version: 1.0.0
+ 
+.DESCRIPTION
+    Conf-Firewall sets a basic firewall configuration.
+
+.EXAMPLE
+    PS C:\> Conf-Firewall
+
+.NOTES
+    You can verify if the rule is enabled with:
+    Get-NetFirewallRule -DisplayGroup "File And Printer Sharing"
+#>
 
 # Enable ICMPv4 to ping to the system.
 Set-NetFirewallRule -DisplayGroup "File And Printer Sharing" -Enabled True
