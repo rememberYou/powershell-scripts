@@ -13,9 +13,7 @@
     Conf-DHCP Installs the DHCP service and sets a basic DHCP configuration.
 
 .EXAMPLE
-    PS C:\> Conf-DNS -ZoneName heh.lan
-    -NetworkID 172.16.120.0 -Prefix 24 -RevZoneName 120.16.172.in-addr.arpa
-    -SRVPri SRVDNSPrimary -SRVSec SRVDNSSecondary
+    PS C:\>
 
 .NOTES
     You can verify the DHCP installation with:
@@ -24,11 +22,8 @@
     You can verify the DHCP configuration with:
     `Get-DhcpServerv4Scope -cn srvdnsprimary | select scopeid, name, description`
 #>
-Import-Module ServerManagement
 Add-WindowsFeature -Name DHCP -IncludeManagementTools
 
-# 242 employees ==> Scope: 172.16.1.0 -> 172.16.2.255
-# Scope Gateway: 172.16.1.1
-# DomainName: 015DNSDOMAINNAME
-
-Add-DhcpServerv4Scope -Name 'employees scope' -StartRange 172.16.1.1 -EndRange 172.16.2.254 -SubnetMask 255.255.0.0 -Description 'created for the employees' –cn srvdnsprimary
+# This registry's value has to be updated to tell that the configuration has been completed.
+Set-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\ServerManager\Roles\12 -Name ConfigurationState -Value 2
+Restart-Service DHCPServer
