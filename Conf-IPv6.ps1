@@ -12,10 +12,10 @@
     Conf-IPv4 sets a basic IPv6 configuration with the possibility to change the hostname of the machine.    
 
 .EXAMPLE
-    PS C:\> Conf-IPv5 -Name SRVDNSPrimary -InterfaceIndex 5 -IP ACAD::10 -Length 64 -Gateway FE80::1 -DnsPri ACAD::10 -DnsSec ACAD::11
+    PS C:\> Conf-IPv5 -Name SRVDNSPrimary -InterfaceIndex 5 -IP ACAD::10 -Length 64 -Gateway ACAD::1 -DnsPri ACAD::10 -DnsSec ACAD::11
 
 .EXAMPLE
-    PS C:\> Conf-IPv6 -InterfaceIndex 5 -IP ACAD::10 -Length 64 -Gateway FE80::1 -DnsPri ACAD::10 -DnsSec ACAD::11
+    PS C:\> Conf-IPv6 -InterfaceIndex 5 -IP ACAD::10 -Length 64 -Gateway ACAD::1 -DnsPri ACAD::10 -DnsSec ACAD::11
 
 .NOTES
     You can verify your IP addresses configurations with:
