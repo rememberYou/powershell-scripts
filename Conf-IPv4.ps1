@@ -13,7 +13,7 @@
     Conf-IPv4 sets a basic IPv4 configuration with the possibility to change the hostname of the machine.
 
 .EXAMPLE
-    PS C:\> Conf-IPv4 -Name SRVDNSPrimary -InterfaceIndex 5 -IP 172.16.0.10 -Length 24 -Gateway 172.16.0.1 -DnsPri 172.16.0.10 -DnsSec 172.16.0.11
+    PS C:\> Conf-IPv4 -Name SRVDNSPrimary -InterfaceIndex 5 -IP 172.16.0.10 -Length 16 -Gateway 172.16.0.1 -DnsPri 172.16.0.10 -DnsSec 172.16.0.11
 
 .NOTES
     You can verify your IP addresses configurations with:
