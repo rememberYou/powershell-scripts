@@ -29,7 +29,8 @@ Function IsFeatureInstalled($Feature)
 }
 
 $Feature = "DHCP"
-If (-Not IsFeatureInstalled($Feature))
+If (-Not (IsFeatureInstalled($Feature)))
+{
     Add-WindowsFeature -Name DHCP -IncludeManagementTools
 
     # This registry's value has to be updated to tell that the configuration has been completed.
