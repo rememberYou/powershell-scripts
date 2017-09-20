@@ -15,7 +15,7 @@
     PS C:\> Conf-IPv4 -Name SRVDNSPrimary -InterfaceIndex 5 -IP 172.16.0.0 -Length 24 -Gateway 172.16.0.0.1 -DnsSec 172.16.0.11
 
 .EXAMPLE
-    PS C:\> Conf-IPv4 -InterfaceIndex 5 -IP 172.16.0.0 -Length 24 -Gateway 172.16.0.0.1 -DnsSec 172.16.0.11 
+    PS C:\> Conf-IPv4 -InterfaceIndex 5 -IP 172.16.0.0 -Length 24 -Gateway 172.16.0.1 -DnsSec 172.16.0.11 
 
 .NOTES
     You can verify your IP addresses configurations with:
