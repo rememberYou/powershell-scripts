@@ -3,13 +3,14 @@
     Sets a basic IPv6 configuration with the possibility to change the hostname of the machine.
     PowerSploit Function: Conf-IPv6
     Author: Terencio Agozzino (@rememberYou)
+            Alexandre Ducobu (@Harchytekt)
     License: None
     Required Dependencies: None
     Optional Dependencies: None
     Version: 1.0.0
- 
+
 .DESCRIPTION
-    Conf-IPv4 sets a basic IPv6 configuration with the possibility to change the hostname of the machine.    
+    Conf-IPv4 sets a basic IPv6 configuration with the possibility to change the hostname of the machine.
 
 .EXAMPLE
     PS C:\> Conf-IPv6 -Name SRVDNSPrimary -InterfaceIndex 5 -IP ACAD::10 -Length 64 -Gateway ACAD::1 -DnsPri ACAD::10 -DnsSec ACAD::11
@@ -25,22 +26,22 @@
     `netsh interface ipv6 show dnsservers`
 #>
 
-Param(    
+Param(
     [String]
     $Name,
 
     [ValidateNotNullOrEmpty()]
     [String]
     $InterfaceIndex,
-    
+
     [ValidateNotNullOrEmpty()]
     [String]
     $IP,
-    
+
     [ValidateNotNullOrEmpty()]
     [String]
     $Length,
-    
+
     [ValidateNotNullOrEmpty()]
     [String]
     $Gateway,
@@ -48,7 +49,7 @@ Param(
     [ValidateNotNullOrEmpty()]
     [String]
     $DnsPri,
-    
+
     [ValidateNotNullOrEmpty()]
     [String]
     $DnsSec
