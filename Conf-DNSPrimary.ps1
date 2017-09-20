@@ -88,7 +88,8 @@ If (-Not (IsFeatureInstalled($Feature)))
 
     # Create Alias
     Add-DnsServerResourceRecordCName -Name "www" -HostNameAlias "$SRVPri.$ZoneName" -ZoneName "$ZoneName"
-
+    Add-DnsServerResourceRecordCName -Name "SRV2" -HostNameAlias "$SRVSec.$ZoneName" -ZoneName "$ZoneName"
+    
     # Create Name Servers
     Add-DnsServerResourceRecord -ZoneName "$ZoneName" -Name "." -NameServer "$SRVPri.$ZoneName" -NS
     Add-DnsServerResourceRecord -ZoneName "$ZoneName" -Name "." -NameServer "$SRVSec.$ZoneName" -NS
