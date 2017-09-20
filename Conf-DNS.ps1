@@ -92,6 +92,9 @@ If (-Not (IsFeatureInstalled($Feature)))
     # Create Name Servers
     Add-DnsServerResourceRecord -ZoneName "$ZoneName" -Name "." -NameServer "$SRVPri.$ZoneName" -NS
     Add-DnsServerResourceRecord -ZoneName "$ZoneName" -Name "." -NameServer "$SRVSec.$ZoneName" -NS
+    
+    Add-DnsServerResourceRecord -ZoneName "$RevZoneNameV4" -Name "." -NameServer "$SRVPri.$ZoneName" -NS
+    Add-DnsServerResourceRecord -ZoneName "$RevZoneNameV6" -Name "." -NameServer "$SRVSec.$ZoneName" -NS
 }
 else
 {
