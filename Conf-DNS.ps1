@@ -64,12 +64,11 @@ Param(
 
 Function IsFeatureInstalled($Feature)
 {
-    return Get-WindowsFeature | Where-Object {$_.Name -like "$Feature" -and $_.InstallState -eq "Installed"}
+    return Get-WindowsFeature | Where-Object {$_.Name -like "$Feature" -and $($_.InstallState -eq "Installed" -or $_.InstallState -eq "InstallPending")}
 }
 
 $Feature = "DNS"
-If (IsFeatureInstalled($Feature))
-{
+If (-Not IsFeatureInstalled($Feature))
     Import-Module ServerManager
     Add-WindowsFeature -Name DNS -IncludeManagementTools
     # Create Forward Lookup Zones
