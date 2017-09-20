@@ -12,18 +12,9 @@
     Conf-DNS Installs the DNS service and sets a basic DNS configuration.
 
 .EXAMPLE
-    PS C:\> Conf-DNS -ZoneName heh.lan -ReplicationZone Domain 
+    PS C:\> Conf-DNS -ZoneName heh.lan 
     -NetworkID 172.16.120.0 -Prefix 24 -RevZoneName 120.16.172.in-addr.arpa
     -SRVPri SRVDNSPrimary -SRVSec SRVDNSSecondary
-
-.EXAMPLE
-    PS C:\> Conf-DNS -ZoneName heh.lan -ReplicationZone Domain 
-    -NetworkID 172.16.120.0 -Prefix 24 -RevZoneName 120.16.172.in-addr.arpa
-    -SRVPri SRVDNSPrimary -SRVSec SRVDNSSecondary
-
-.EXAMPLE
-    PS C:\> Conf-DNS -ZoneName heh.lan -NetworkID 172.16.120.0 -Prefix 24 
-    -RevZoneName 120.16.172.in-addr.arpa -SRVPri SRVDNSPrimary -SRVSec SRVDNSSecondary
 
 .NOTES
     You can verify the DNS installation with:
