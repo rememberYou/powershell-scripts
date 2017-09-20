@@ -46,7 +46,7 @@ Import-Module ServerManager
 Add-WindowsFeature -Name DNS -IncludeManagementTools
 
 # Create Forward Lookup Zones
-Add-DnsServerPrimaryZone -Name "$ZoneName" -ZoneFile "$ZoneName.dns" -DynamicUpdate Secure -ReplicationZone "$ReplicationZone"
+Add-DnsServerPrimaryZone -Name "$ZoneName" -ZoneFile "$ZoneName.dns" -DynamicUpdate Secure
 
 # Create Reverse Lookup Zones
 Add-DnsServerPrimaryZone -NetworkID "$NetworkID/$Prefix" -ZoneFile "$RevZoneName.dns"
