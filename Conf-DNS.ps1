@@ -8,12 +8,15 @@
     Required Dependencies: None
     Optional Dependencies: None
     Version: 1.0.0
-
+ 
 .DESCRIPTION
     Conf-DNS Installs the DNS service and sets a basic DNS configuration.
 
 .EXAMPLE
-    PS C:\> Conf-DNS -ZoneName heh.lan -NetworkID 172.16.0.0 -Prefix 16 -RevZoneName 16.172.in-addr.arpa -SRVPri SRVDNSPrimary -SRVSec SRVDNSSec
+    PS C:\> Conf-DNS -ZoneName heh.lan -NetworkIDv4 172.16.0.0 -PrefixV4 16 -RevZoneNameV4 16.172.in-addr.arpa -SRVPri SRVDNSPrimary -SRVSec SRVDNSSec
+
+.EXAMPLE
+    PS C:\> Conf-DNS -ZoneName heh.lan -NetworkIDv4 172.16.0.0 -PrefixV4 16 -RevZoneNameV4 16.172.in-addr.arpa -NetworkIDv6 acad:: -PrefixV6 64 -RevZoneNameV6 acad.ip6.arpa -SRVPri SRVDNSPrimary -SRVSec SRVDNSSec
 
 .NOTES
     You can verify the DNS installation with:
@@ -23,22 +26,32 @@
     `Get-DnsServerZone`
 #>
 
-Param(
+Param(    
     [ValidateNotNullOrEmpty()]
     [String]
-    $ZoneName,
+    $ZoneName,        
+    
+    [ValidateNotNullOrEmpty()]
+    [String]
+    $NetworkIDv4,
+    
+    [ValidateNotNullOrEmpty()]
+    [String]
+    $PrefixV4,
+
+    [String]
+    $NetworkIDv6,
+       
+    [String]
+    $Prefixv6,
+   
+    [ValidateNotNullOrEmpty()]
+    [String]
+    $RevZoneNameV4,
 
     [ValidateNotNullOrEmpty()]
     [String]
-    $NetworkID,
-
-    [ValidateNotNullOrEmpty()]
-    [String]
-    $Prefix,
-
-    [ValidateNotNullOrEmpty()]
-    [String]
-    $RevZoneName,
+    $RevZoneNameV6,
 
     [ValidateNotNullOrEmpty()]
     [String]
@@ -49,14 +62,17 @@ Param(
     $SRVSec
 )
 
-Import-Module ServerManager
-Add-WindowsFeature -Name DNS -IncludeManagementTools
+If (Get-WindowsFeature | Where-Object {$_Name -like "DNS" -and $_InstallState -eq "Available"}) {
+    Import-Module ServerManager
+    Add-WindowsFeature -Name DNS -IncludeManagementTools
+}
 
 # Create Forward Lookup Zones
 Add-DnsServerPrimaryZone -Name "$ZoneName" -ZoneFile "$ZoneName.dns"
 
 # Create Reverse Lookup Zones
-Add-DnsServerPrimaryZone -NetworkID "$NetworkID/$Prefix" -ZoneFile "$RevZoneName.dns"
+Add-DnsServerPrimaryZone -NetworkID "$NetworkIDv4/$PrefixV4" -ZoneFile "$RevZoneNameV4.dns"
+Add-DnsServerPrimaryZone -NetworkID "$NetworkIDv6/$PrefixV6" -ZoneFile "$RevZoneNameV6.dns"
 
 # Create Records
 Add-DnsServerResourceRecordA -Name "$SRVPri" -ZoneName "$ZoneName" -AllowUpdateAny -IPv4Address "172.16.0.10" -CreatePtr
