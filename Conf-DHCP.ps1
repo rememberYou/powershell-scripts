@@ -17,13 +17,26 @@
 
 .NOTES
     You can verify the DHCP installation with:
-    # `Get-WindowsFeature`
+    `Get-WindowsFeature`
 
     You can verify the DHCP configuration with:
     `Get-DhcpServerv4Scope -cn srvdnsprimary | select scopeid, name, description`
 #>
-Add-WindowsFeature -Name DHCP -IncludeManagementTools
 
-# This registry's value has to be updated to tell that the configuration has been completed.
-Set-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\ServerManager\Roles\12 -Name ConfigurationState -Value 2
-Restart-Service DHCPServer
+Function IsFeatureInstalled($Feature)
+{
+    return Get-WindowsFeature | Where-Object {$_.Name -like "$Feature" -and $($_.InstallState -eq "Installed" -or $_.InstallState -eq "InstallPending")}
+}
+
+$Feature = "DHCP"
+If (-Not IsFeatureInstalled($Feature))
+    Add-WindowsFeature -Name DHCP -IncludeManagementTools
+
+    # This registry's value has to be updated to tell that the configuration has been completed.
+    Set-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\ServerManager\Roles\12 -Name ConfigurationState -Value 2
+    Restart-Service DHCPServer
+}
+else
+{
+    Write-Host "The $Feature feature is already installed."
+}
