@@ -47,7 +47,7 @@ Param(
 
     [ValidateNotNullOrEmpty()]
     [String]
-    $DnsPri
+    $DnsPri,
     
     [ValidateNotNullOrEmpty()]
     [String]
