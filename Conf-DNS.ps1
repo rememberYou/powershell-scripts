@@ -28,9 +28,6 @@ Param(
     [ValidateNotNullOrEmpty()]
     [String]
     $ZoneName,
-        
-    [String]
-    $ReplicationZone=Domain
     
     [ValidateNotNullOrEmpty()]
     [String]
