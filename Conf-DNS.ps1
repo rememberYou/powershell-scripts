@@ -62,24 +62,34 @@ Param(
     $SRVSec
 )
 
-If (Get-WindowsFeature | Where-Object {$_Name -like "DNS" -and $_InstallState -eq "Available"}) {
-    Import-Module ServerManager
-    Add-WindowsFeature -Name DNS -IncludeManagementTools
+Function IsFeatureInstalled($Feature)
+{
+    return Get-WindowsFeature | Where-Object {$_.Name -like "$Feature" -and $_.InstallState -eq "Installed"}
 }
 
-# Create Forward Lookup Zones
-Add-DnsServerPrimaryZone -Name "$ZoneName" -ZoneFile "$ZoneName.dns"
+$Feature = "DNS"
+If (IsFeatureInstalled($Feature))
+{
+    Import-Module ServerManager
+    Add-WindowsFeature -Name DNS -IncludeManagementTools
+    # Create Forward Lookup Zones
+    Add-DnsServerPrimaryZone -Name "$ZoneName" -ZoneFile "$ZoneName.dns"
 
-# Create Reverse Lookup Zones
-Add-DnsServerPrimaryZone -NetworkID "$NetworkIDv4/$PrefixV4" -ZoneFile "$RevZoneNameV4.dns"
-Add-DnsServerPrimaryZone -NetworkID "$NetworkIDv6/$PrefixV6" -ZoneFile "$RevZoneNameV6.dns"
+    # Create Reverse Lookup Zones
+    Add-DnsServerPrimaryZone -NetworkID "$NetworkIDv4/$PrefixV4" -ZoneFile "$RevZoneNameV4.dns"
+    Add-DnsServerPrimaryZone -NetworkID "$NetworkIDv6/$PrefixV6" -ZoneFile "$RevZoneNameV6.dns"
 
-# Create Records
-Add-DnsServerResourceRecordA -Name "$SRVPri" -ZoneName "$ZoneName" -AllowUpdateAny -IPv4Address "172.16.0.10" -CreatePtr
-Add-DnsServerResourceRecordAAAA -Name "$SRVPri" -ZoneName "$ZoneName" -AllowUpdateAny -IPv6Address "ACAD::10" -CreatePtr
+    # Create Records
+    Add-DnsServerResourceRecordA -Name "$SRVPri" -ZoneName "$ZoneName" -AllowUpdateAny -IPv4Address "172.16.0.10" -CreatePtr
+    Add-DnsServerResourceRecordAAAA -Name "$SRVPri" -ZoneName "$ZoneName" -AllowUpdateAny -IPv6Address "ACAD::10" -CreatePtr
 
-Add-DnsServerResourceRecordA -Name "$SRVSec" -ZoneName "$ZoneName" -AllowUpdateAny -IPv4Address "172.16.0.11" -CreatePtr
-Add-DnsServerResourceRecordAAAA -Name "$SRVSec" -ZoneName "$ZoneName" -AllowUpdateAny -IPv6Address "ACAD::11" -CreatePtr
+    Add-DnsServerResourceRecordA -Name "$SRVSec" -ZoneName "$ZoneName" -AllowUpdateAny -IPv4Address "172.16.0.11" -CreatePtr
+    Add-DnsServerResourceRecordAAAA -Name "$SRVSec" -ZoneName "$ZoneName" -AllowUpdateAny -IPv6Address "ACAD::11" -CreatePtr
 
-# Create Alias
-Add-DnsServerResourceRecordCName -Name "www" -HostNameAlias "$SRVPri.$ZoneName" -ZoneName "$ZoneName"
+    # Create Alias
+    Add-DnsServerResourceRecordCName -Name "www" -HostNameAlias "$SRVPri.$ZoneName" -ZoneName "$ZoneName"
+}
+else
+{
+    Write-Host "The $Feature feature is already installed."
+}
