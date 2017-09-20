@@ -8,7 +8,7 @@
     Required Dependencies: None
     Optional Dependencies: None
     Version: 1.0.0
-
+ 
 .DESCRIPTION
     Conf-DNS Installs the DNS service and sets a basic DNS configuration.
 
@@ -26,25 +26,25 @@
     `Get-DnsServerZone`
 #>
 
-Param(
+Param(    
     [ValidateNotNullOrEmpty()]
     [String]
-    $ZoneName,
-
+    $ZoneName,        
+    
     [ValidateNotNullOrEmpty()]
     [String]
     $NetworkIDv4,
-
+    
     [ValidateNotNullOrEmpty()]
     [String]
     $PrefixV4,
 
     [String]
     $NetworkIDv6,
-
+       
     [String]
     $Prefixv6,
-
+   
     [ValidateNotNullOrEmpty()]
     [String]
     $RevZoneNameV4,
@@ -88,6 +88,10 @@ If (-Not (IsFeatureInstalled($Feature)))
 
     # Create Alias
     Add-DnsServerResourceRecordCName -Name "www" -HostNameAlias "$SRVPri.$ZoneName" -ZoneName "$ZoneName"
+
+    # Create Name Servers
+    Add-DnsServerResourceRecord -ZoneName "$ZoneName" -Name "." -NameServer "$SRVPri.$ZoneName" -NS
+    Add-DnsServerResourceRecord -ZoneName "$ZoneName" -Name "." -NameServer "$SRVSec.$ZoneName" -NS
 }
 else
 {
