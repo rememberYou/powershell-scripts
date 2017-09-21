@@ -13,10 +13,10 @@
     Conf-DNS Installs the DNS service and sets a basic DNS primary configuration.
 
 .EXAMPLE
-    PS C:\> Conf-DNS -ZoneName heh.lan -NetworkIDv4 172.16.0.0 -PrefixV4 16 -RevZoneNameV4 16.172.in-addr.arpa -SRVPri SRVDNSPrimary -SRVSec SRVDNSSec
+    PS C:\> Conf-DNSPrimary -ZoneName heh.lan -NetworkIDv4 172.16.0.0 -PrefixV4 16 -RevZoneNameV4 16.172.in-addr.arpa -SRVPri SRVDNSPrimary -SRVSec SRVDNSSecondary
 
 .EXAMPLE
-    PS C:\> Conf-DNS -ZoneName heh.lan -NetworkIDv4 172.16.0.0 -PrefixV4 16 -RevZoneNameV4 16.172.in-addr.arpa -NetworkIDv6 acad:: -PrefixV6 64 -RevZoneNameV6 acad.ip6.arpa -SRVPri SRVDNSPrimary -SRVSec SRVDNSSec
+    PS C:\> Conf-DNSPrimary -ZoneName heh.lan -NetworkIDv4 172.16.0.0 -PrefixV4 16 -RevZoneNameV4 16.172.in-addr.arpa -NetworkIDv6 acad:: -PrefixV6 64 -RevZoneNameV6 0.0.0.0.0.0.0.0.0.0.0.0.d.a.c.a.ip6.arpa -SRVPri SRVDNSPrimary -SRVSec SRVDNSSecondary
 
 .NOTES
     You can verify the DNS installation with:
@@ -47,7 +47,7 @@ Param(
     $NetworkIDv6,
        
     [String]
-    $Prefixv6,
+    $PrefixV6,
     
     [String]
     $RevZoneNameV6,
@@ -76,8 +76,8 @@ If (-Not (IsFeatureInstalled($Feature)))
     Add-DnsServerPrimaryZone -Name "$ZoneName" -ZoneFile "$ZoneName.dns"
 
     # Create Reverse Lookup Zones
-    Add-DnsServerPrimaryZone -NetworkID "$NetworkIDv4/$PrefixV4" -ZoneFile "$RevZoneNameV4.dns"
-    Add-DnsServerPrimaryZone -NetworkID "$NetworkIDv6/$PrefixV6" -ZoneFile "$RevZoneNameV6.dns"
+    Add-DnsServerPrimaryZone -NetworkId "$NetworkIDv4/$PrefixV4" -ZoneFile "$RevZoneNameV4.dns"
+    Add-DnsServerPrimaryZone -NetworkId "$NetworkIDv6/$PrefixV6" -ZoneFile "$RevZoneNameV6.dns"
 
     # Create Records
     Add-DnsServerResourceRecordA -Name "$SRVPri" -ZoneName "$ZoneName" -AllowUpdateAny -IPv4Address "172.16.0.10" -CreatePtr
@@ -95,7 +95,16 @@ If (-Not (IsFeatureInstalled($Feature)))
     Add-DnsServerResourceRecord -ZoneName "$ZoneName" -Name "." -NameServer "$SRVSec.$ZoneName" -NS
     
     Add-DnsServerResourceRecord -ZoneName "$RevZoneNameV4" -Name "." -NameServer "$SRVPri.$ZoneName" -NS
+    Add-DnsServerResourceRecord -ZoneName "$RevZoneNameV4" -Name "." -NameServer "$SRVSec.$ZoneName" -NS
+
+    Add-DnsServerResourceRecord -ZoneName "$RevZoneNameV6" -Name "." -NameServer "$SRVPri.$ZoneName" -NS
     Add-DnsServerResourceRecord -ZoneName "$RevZoneNameV6" -Name "." -NameServer "$SRVSec.$ZoneName" -NS
+
+    # Create Transfert Zone
+    Start-DnsServerZoneTransfer -Name "$ZoneName"
+
+    # Create Delegation Zone
+    Add-DnsServerZoneDelegation -Name "heh.lan" -ChildZoneName "delegation" -NameServer "SRVDNSSecondary.delegation.heh.lan" -IPAddress "172.16.0.11"
 }
 else
 {
