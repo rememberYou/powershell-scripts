@@ -28,7 +28,7 @@
 Param(    
     [ValidateNotNullOrEmpty()]
     [String]
-    $ZoneName,
+    $DomainName,
         
     [String]
     $NetbiosName
@@ -44,11 +44,12 @@ Add-WindowsFeature AD-Domain-Services
 Import-Module ADDSDeployment
 
 If ([string]::IsNullOrEmpty($NetbiosName)) {
-    Install-ADDSForest -CreateDnsDelegation:$false `
+    Install-ADDSForest `
+    -CreateDnsDelegation:$false `
     -DatabasePath "C:\Windows\NTDS" `
     -DomainMode "Default" `
-    -DomainName "$ZoneName" `
-    -DomainNetbiosName "$(Get-NetbiosName($ZoneName))" `
+    -DomainName "$DomainName" `
+    -DomainNetbiosName "$(Get-NetbiosName($DomainName))" `
     -ForestMode "Default" `
     -InstallDns:$true `
     -LogPath "C:\Windows\NTDS" `
@@ -56,11 +57,12 @@ If ([string]::IsNullOrEmpty($NetbiosName)) {
     -SysvolPath "C:\Windows\SYSVOL" `
     -Force:$true
 } Else {
-    Install-ADDSForest -CreateDnsDelegation:$false `
+    Install-ADDSForest `
+     -CreateDnsDelegation:$false `
     -DatabasePath "C:\Windows\NTDS" `
     -DomainMode "Default" `
-    -DomainName "$ZoneName" `
-    -DomainNetbiosName "$ZoneName)" `
+    -DomainName "$DomainName" `
+    -DomainNetbiosName "$NetbiosName" `
     -ForestMode "Default" `
     -InstallDns:$true `
     -LogPath "C:\Windows\NTDS" `
