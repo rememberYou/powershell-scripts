@@ -58,7 +58,7 @@ If ([string]::IsNullOrEmpty($NetbiosName)) {
     -Force:$true
 } Else {
     Install-ADDSForest `
-     -CreateDnsDelegation:$false `
+    -CreateDnsDelegation:$false `
     -DatabasePath "C:\Windows\NTDS" `
     -DomainMode "Default" `
     -DomainName "$DomainName" `
