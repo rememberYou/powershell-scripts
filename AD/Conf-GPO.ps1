@@ -27,13 +27,13 @@ Param(
     [String]
     $ZoneName,
     
-    [String]
+    [TimeSpan]
     $MinPasswordAge=1,
     
-    [String]
+    [TimeSpan]
     $MaxPasswordAge=30,
 
-    [String]
+    [Int32]
     $MinPasswordLength=10
 )
 
