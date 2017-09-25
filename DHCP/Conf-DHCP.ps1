@@ -22,8 +22,8 @@
     You can verify the DHCP configuration with:
     `Get-DhcpServerv4Scope -cn srvdnsprimary | select scopeid, name, description`
 
-    There are 242 employees, we choose this scope: 172.16.1.0 -> 172.16.2.255
-    The scope gateway is 172.16.1.1
+    There are 242 employees, we choose this scope: 192.168.1.0 -> 192.168.2.255
+    The scope gateway is 192.168.1.1
 #>
 
 Function IsFeatureInstalled($Feature)
@@ -42,10 +42,10 @@ If (-Not (IsFeatureInstalled($Feature)))
 
     # IPv4
     # Lease format is day.hrs:mins:secs
-    Add-DhcpServerv4Scope -Name 'employees scope (IPv4)' -StartRange 172.16.1.1 -EndRange 172.16.2.254 -SubnetMask 255.255.0.0 -LeaseDuration 2.00:00:00 -Description 'Created for the employees' -ComputerName 'SRVDNSPrimary' -State Active
+    Add-DhcpServerv4Scope -Name 'employees scope (IPv4)' -StartRange 192.168.1.1 -EndRange 192.168.2.254 -SubnetMask 255.255.0.0 -LeaseDuration 2.00:00:00 -Description 'Created for the employees' -ComputerName 'SRVDNSPrimary' -State Active
     # OptionID 3 stand for Gateway Address
-    Set-DhcpServerv4OptionValue -OptionID 3 -Value 172.16.1.1 -ScopeID 172.16.1.0 -ComputerName 'SRVDNSPrimary'
-    Set-DhcpServerv4OptionValue -DnsDomain 'heh.lan' -DnsServer 172.16.0.10
+    Set-DhcpServerv4OptionValue -OptionID 3 -Value 192.168.1.1 -ScopeID 192.168.1.0 -ComputerName 'SRVDNSPrimary'
+    Set-DhcpServerv4OptionValue -DnsDomain 'heh.lan' -DnsServer 192.168.42.1
 
     # IPv6
     # LifeTime format is day.hrs:mins:secs
