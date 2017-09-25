@@ -15,12 +15,12 @@
 .EXAMPLE
     PS C:\> Conf-DNSSecondary -ZoneName heh.lan -NetworkIDv4 192.168.0.0 `
                               -PrefixV4 16 -RevZoneNameV4 168.192.in-addr.arpa `
-                              -MasterServersV4 192.168.42.10
+                              -MasterServersV4 192.168.42.1
 
 .EXAMPLE    
     PS C:\> Conf-DNSSecondary -ZoneName heh.lan -NetworkIDv4 192.168.0.0 `
                               -PrefixV4 16 -RevZoneNameV4 168.192.in-addr.arpa `
-                              -MasterServersV4 192.168.42.10 -NetworkIDv6 acad:: `
+                              -MasterServersV4 192.168.42.1 -NetworkIDv6 acad:: `
                               -PrefixV6 64 `
                               -RevZoneNameV6 0.0.0.0.0.0.0.0.0.0.0.0.d.a.c.a.ip6.arpa `
                               -MasterServersV6 ACAD::10
