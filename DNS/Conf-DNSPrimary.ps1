@@ -13,13 +13,13 @@
     Conf-DNSPrimary Installs the DNS service and sets a basic DNS primary configuration.
 
 .EXAMPLE
-    PS C:\> Conf-DNSPrimary -ZoneName heh.lan -NetworkIDv4 172.16.0.0 `
-                            -PrefixV4 16 -RevZoneNameV4 16.172.in-addr.arpa `
+    PS C:\> Conf-DNSPrimary -ZoneName heh.lan -NetworkIDv4 10.1.0.0 `
+                            -PrefixV4 16 -RevZoneNameV4 1.10.in-addr.arpa `
                             -SRVPri SRVDNSPrimary -SRVSec SRVDNSSecondary
 
 .EXAMPLE
-    PS C:\> Conf-DNSPrimary -ZoneName heh.lan -NetworkIDv4 172.16.0.0 `
-                            -PrefixV4 16 -RevZoneNameV4 16.172.in-addr.arpa `
+    PS C:\> Conf-DNSPrimary -ZoneName heh.lan -NetworkIDv4 10.1.0.0 `
+                            -PrefixV4 16 -RevZoneNameV4 1.10.in-addr.arpa `
                             -NetworkIDv6 acad:: -PrefixV6 64 `
                             -RevZoneNameV6 0.0.0.0.0.0.0.0.0.0.0.0.d.a.c.a.ip6.arpa `
                             -SRVPri SRVDNSPrimary -SRVSec SRVDNSSecondary

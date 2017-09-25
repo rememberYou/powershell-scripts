@@ -13,14 +13,14 @@
     Conf-DNSSeocndary Installs the DNS service and sets a basic DNS secondary configuration.
 
 .EXAMPLE
-    PS C:\> Conf-DNSSecondary -ZoneName heh.lan -NetworkIDv4 172.16.0.0 `
-                              -PrefixV4 16 -RevZoneNameV4 16.172.in-addr.arpa `
-                              -MasterServersV4 172.16.0.10
+    PS C:\> Conf-DNSSecondary -ZoneName heh.lan -NetworkIDv4 10.1.0.0 `
+                              -PrefixV4 16 -RevZoneNameV4 1.10.in-addr.arpa `
+                              -MasterServersV4 10.1.242.10
 
 .EXAMPLE    
-    PS C:\> Conf-DNSSecondary -ZoneName heh.lan -NetworkIDv4 172.16.0.0 `
-                              -PrefixV4 16 -RevZoneNameV4 16.172.in-addr.arpa `
-                              -MasterServersV4 172.16.0.10 -NetworkIDv6 acad:: `
+    PS C:\> Conf-DNSSecondary -ZoneName heh.lan -NetworkIDv4 10.1.0.0 `
+                              -PrefixV4 16 -RevZoneNameV4 1.10.in-addr.arpa `
+                              -MasterServersV4 10.1.242.10 -NetworkIDv6 acad:: `
                               -PrefixV6 64 `
                               -RevZoneNameV6 0.0.0.0.0.0.0.0.0.0.0.0.d.a.c.a.ip6.arpa `
                               -MasterServersV6 ACAD::10
@@ -87,7 +87,7 @@ If (-Not (IsFeatureInstalled("DNS"))) {
     }
 
     # Create Records
-    Add-DnsServerResourceRecordA -Name "SRVDNSPrimary" -ZoneName "delegation.$ZoneName" -AllowUpdateAny -IPv4Address "172.16.0.10"
+    Add-DnsServerResourceRecordA -Name "SRVDNSPrimary" -ZoneName "delegation.$ZoneName" -AllowUpdateAny -IPv4Address "10.1.242.10"
     If (-Not ([string]::IsNullOrEmpty($NetworkIDv6))) {
 	Add-DnsServerResourceRecordAAAA -Name "SRVDNSPrimary" -ZoneName "delegation.$ZoneName" -AllowUpdateAny -IPv6Address "ACAD::10"
     }
