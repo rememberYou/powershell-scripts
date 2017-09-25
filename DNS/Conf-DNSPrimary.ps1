@@ -87,12 +87,12 @@ If (-Not (IsFeatureInstalled("DNS"))) {
     }
 
     # Create Records
-    Add-DnsServerResourceRecordA -Name "$SRVPri" -ZoneName "$ZoneName" -AllowUpdateAny -IPv4Address "172.16.0.10" -CreatePtr
+    Add-DnsServerResourceRecordA -Name "$SRVPri" -ZoneName "$ZoneName" -AllowUpdateAny -IPv4Address "192.168.42.1" -CreatePtr
     If (-Not ([string]::IsNullOrEmpty($NetworkIDv6))) {
 	Add-DnsServerResourceRecordAAAA -Name "$SRVPri" -ZoneName "$ZoneName" -AllowUpdateAny -IPv6Address "ACAD::10" -CreatePtr
     }
 
-    Add-DnsServerResourceRecordA -Name "$SRVSec" -ZoneName "$ZoneName" -AllowUpdateAny -IPv4Address "172.16.0.11" -CreatePtr
+    Add-DnsServerResourceRecordA -Name "$SRVSec" -ZoneName "$ZoneName" -AllowUpdateAny -IPv4Address "192.168.42.2" -CreatePtr
     If (-Not ([string]::IsNullOrEmpty($NetworkIDv6))) {
 	Add-DnsServerResourceRecordAAAA -Name "$SRVSec" -ZoneName "$ZoneName" -AllowUpdateAny -IPv6Address "ACAD::11" -CreatePtr
     }
@@ -118,5 +118,5 @@ If (-Not (IsFeatureInstalled("DNS"))) {
 
     # Create Delegation Zone
     Add-DnsServerZoneDelegation -Name "heh.lan" -ChildZoneName "delegation" `
-      -NameServer "SRVDNSSecondary.delegation.heh.lan" -IPAddress "172.16.0.11"
+      -NameServer "SRVDNSSecondary.delegation.heh.lan" -IPAddress "192.168.42.2"
 } Else { Write-Host "The $Feature feature is already installed." }
