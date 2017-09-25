@@ -83,7 +83,7 @@ If (-Not (IsFeatureInstalled("DNS"))) {
     # Create Reverse Lookup Zones
     Add-DnsServerSecondaryZone -NetworkId "$NetworkIDv4/$PrefixV4" -ZoneFile "$RevZoneNameV4.dns" -MasterServers "$MasterServersV4"
     If (-Not ([string]::IsNullOrEmpty($NetworkIDv6))) {
-	Add-DnsServerSecondaryZone -NeteworkId "$NetworkIDv6/$PrefixV6" -ZoneFile "$RevZoneNameV6.dns" -MasterServers "$MasterServersV6"
+	Add-DnsServerSecondaryZone -networkId "$NetworkIDv6/$PrefixV6" -ZoneFile "$RevZoneNameV6.dns" -MasterServers "$MasterServersV6"
     }
 
     # Create Records
