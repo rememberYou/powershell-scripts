@@ -15,9 +15,9 @@
     hostname of the machine.
 
 .EXAMPLE
-    PS C:\> Conf-IPv4 -Name SRVDNSPrimary -InterfaceIndex 5 -IP 10.1.242.10 `
-                      -Length 16 -Gateway 172.16.0.1 -DnsPri 10.1.242.10 `
-                      -DnsSec 10.1.242.11
+    PS C:\> Conf-IPv4 -Name SRVDNSPrimary -InterfaceIndex 5 -IP 192.168.42.10 `
+                      -Length 16 -Gateway 192.168.0.1 -DnsPri 192.168.42.10 `
+                      -DnsSec 192.168.42.11
 
 .NOTES
     You can verify your IP addresses configurations with:
