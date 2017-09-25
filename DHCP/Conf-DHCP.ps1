@@ -13,7 +13,10 @@
     Conf-DHCP Installs the DHCP service and sets a basic DHCP configuration.
 
 .EXAMPLE
-    PS C:\>
+    PS C:\> Conf-DNSPrimary -StartRangeV4 192.168.1.1 -EndRangeV4 192.168.2.254 `
+                            -ScopeIDV4 192.168.1.0 -SubnetMaskV4 255.255.0.0 `
+                            -DnsServer 192.168.42.1 -ComputerName 'SRVDNSPrimary' `
+                            -DnsDomain 'heh.lan' -PrefixV6 ACAD:: -LifeTime 2.00:00:00 `
 
 .NOTES
     You can verify the DHCP installation with:
@@ -25,6 +28,44 @@
     There are 242 employees, we choose this scope: 192.168.1.0 -> 192.168.2.255
     The scope gateway is 192.168.1.1
 #>
+
+Param(
+    [ValidateNotNullOrEmpty()]
+    [String]
+    $StartRangeV4,
+
+    [ValidateNotNullOrEmpty()]
+    [String]
+    $EndRangeV4,
+
+    [ValidateNotNullOrEmpty()]
+    [String]
+    $ScopeIDV4,
+
+    [ValidateNotNullOrEmpty()]
+    [String]
+    $SubnetMaskV4,
+
+    [ValidateNotNullOrEmpty()]
+    [String]
+    $DnsServer,
+
+    [[ValidateNotNullOrEmpty()]
+    String]
+    $ComputerName,
+
+    [ValidateNotNullOrEmpty()]
+    [String]
+    $DnsDomain,
+
+    [ValidateNotNullOrEmpty()]
+    [String]
+    $PrefixV6,
+
+    [ValidateNotNullOrEmpty()]
+    [String]
+    $LifeTime
+)
 
 Function IsFeatureInstalled($Feature)
 {
@@ -42,18 +83,18 @@ If (-Not (IsFeatureInstalled($Feature)))
 
     # IPv4
     # Lease format is day.hrs:mins:secs
-    Add-DhcpServerv4Scope -Name 'employees scope (IPv4)' -StartRange 192.168.1.1 -EndRange 192.168.2.254 -SubnetMask 255.255.0.0 -LeaseDuration 2.00:00:00 -Description 'Created for the employees' -ComputerName 'SRVDNSPrimary' -State Active
+    Add-DhcpServerv4Scope -Name 'employees scope (IPv4)' -StartRange "$StartRangeV4" -EndRange "$EndRangeV4" -SubnetMask "$SubnetMaskV4" -LeaseDuration "$LifeTime" -Description 'Created for the employees' -ComputerName "$ComputerName" -State Active
     # OptionID 3 stand for Gateway Address
-    Set-DhcpServerv4OptionValue -OptionID 3 -Value 192.168.1.1 -ScopeID 192.168.1.0 -ComputerName 'SRVDNSPrimary'
-    Set-DhcpServerv4OptionValue -DnsDomain 'heh.lan' -DnsServer 192.168.42.1
+    Set-DhcpServerv4OptionValue -OptionID 3 -Value "$StartRangeV4" -ScopeID "$ScopeIDV4" -ComputerName "$ComputerName"
+    Set-DhcpServerv4OptionValue -DnsDomain 'heh.lan' -DnsServer "$DnsServer"
 
     # IPv6
     # LifeTime format is day.hrs:mins:secs
-    Add-DhcpServerv6Scope -Name 'employees scope (IPv6)' -Prefix ACAD:: -PreferredLifeTime 2.00:00:00 -ValidLifeTime 2.00:00:00 -Description 'Created for the employees' -ComputerName 'SRVDNSPrimary' -State Active
-    Add-DhcpServerv6ExclusionRange -Prefix ACAD:: -StartRange ACAD::1 -EndRange ACAD::FFFF
-    Add-DhcpServerv6ExclusionRange -Prefix ACAD:: -StartRange ACAD::1:200 -EndRange ACAD::FFFF:FFFF:FFFF:FFFF
+    Add-DhcpServerv6Scope -Name 'employees scope (IPv6)' -Prefix "$PrefixV6" -PreferredLifeTime "$LifeTime" -ValidLifeTime "$LifeTime" -Description 'Created for the employees' -ComputerName "$ComputerName" -State Active
+    Add-DhcpServerv6ExclusionRange -Prefix "$PrefixV6" -StartRange ACAD::1 -EndRange ACAD::FFFF
+    Add-DhcpServerv6ExclusionRange -Prefix "$PrefixV6" -StartRange ACAD::1:200 -EndRange ACAD::FFFF:FFFF:FFFF:FFFF
     # OptionID 23 stand for DNS
-    Set-DhcpServerv6OptionValue -OptionId 23 -Value ACAD::10 -ComputerName 'SRVDNSPrimary'
+    Set-DhcpServerv6OptionValue -OptionId 23 -Value ACAD::10 -ComputerName "$ComputerName"
 }
 else
 {
