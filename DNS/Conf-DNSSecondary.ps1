@@ -87,7 +87,7 @@ If (-Not (IsFeatureInstalled("DNS"))) {
     }
 
     # Create Records
-    Add-DnsServerResourceRecordA -Name "SRVDNSPrimary" -ZoneName "delegation.$ZoneName" -AllowUpdateAny -IPv4Address "10.1.242.10"
+    Add-DnsServerResourceRecordA -Name "SRVDNSPrimary" -ZoneName "delegation.$ZoneName" -AllowUpdateAny -IPv4Address "192.168.42.1"
     If (-Not ([string]::IsNullOrEmpty($NetworkIDv6))) {
 	Add-DnsServerResourceRecordAAAA -Name "SRVDNSPrimary" -ZoneName "delegation.$ZoneName" -AllowUpdateAny -IPv6Address "ACAD::10"
     }
