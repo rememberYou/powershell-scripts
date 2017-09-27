@@ -29,6 +29,14 @@
 
     You can verify your DNS server addresses configurations with:
     `netsh interface ipv6 show dnsservers`
+
+    You can verify make a IPv6 ping with `Ping -6 <IPv6 ADDRESS>
+
+    You can verify your tunnels configuration with:
+    `Get-Net6to4Configuration
+
+    You can verify your IPv6 route configuration with:
+    `Get-NetRoute -AdressFamily IPv6 -InterfaceIndex <INT_INDEX_IPv6>
 #>
 
 Param(
@@ -60,9 +68,18 @@ Param(
     $DnsSec
 )
 
-# Use Get-NetIPInterface to get the InterfaceIndex.
-New-NetIPAddress -AddressFamily IPv6 -IPAddress $IP -InterfaceIndex $InterfaceIndex -PrefixLength $Length -DefaultGateway $Gateway
-Set-DnsClientServerAddress -InterfaceIndex $InterfaceIndex -ServerAddresses($DNSPri, $DnsSec)
+# Use Get-NetIPInterface -AddressFamily IPv6 | fl InterfaceAlias, `
+# InterfaceIndex, IPv6Address
+New-NetIPAddress -AddressFamily IPv6 -IPAddress $IP `
+  -InterfaceIndex $InterfaceIndex -PrefixLength $Length `
+  -DefaultGateway $Gateway
+
+Set-DnsClientServerAddress -InterfaceIndex $InterfaceIndex `
+  -ServerAddresses($DNSPri, $DnsSec)
+
+# Disable tunnels.
+Set-Net6to4Configuration -State Disable
+netsh interface isatap set state state=disabled
 
 If(-Not [string]::IsNullOrEmpty($Name))
 {
