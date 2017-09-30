@@ -16,16 +16,15 @@
     PS C:\> Conf-ShadowsCopy -Disk C -MaxSize 8128MB -Time 6:00AM -TaskName ShadowCopy_C_6AM
 
 .NOTES
-    You can verify how many shadow copies exist :
+    You can verify how many shadow copies exists:
     `$shadow = get-wmiobject win32_shadowcopy
-    "There are {0} shadow copies on this sytem." -f $shadow.count`
+    "There are {0} shadow copies on this system." -f $shadow.count`
 
-    You also can verify if the scheduled tasks are well :
+    You also can verify if the scheduled tasks are well:
     `Get-ScheduledTask ShadowCopy_C_6AM | Get-ScheduledTaskInfo`
 
-    You can list all the available shadow copies :
+    You can list all the available shadow copies:
     `vssadmin list shadows`
-
 #>
 
 Param(
@@ -46,10 +45,10 @@ Param(
     $TaskName
 )
 
-# Enables Volume Shadow copy
+# Enables Volume Shadow Copy
 vssadmin add shadowstorage /for="$Disk": /on="$Disk":  /maxsize="$MaxSize"
 
-# Creates a new shadow copy
+# Creates a new Shadow Copy
 vssadmin create shadow /for="$Disk":
 
 "Creating a new shadow copy"
