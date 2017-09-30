@@ -18,10 +18,14 @@
 .NOTES
     You can verify how many shadow copies exist :
     `$shadow = get-wmiobject win32_shadowcopy
-    "There are {0} shadow copies on this sytem" -f $shadow.count`
+    "There are {0} shadow copies on this sytem." -f $shadow.count`
 
     You also can verify if the scheduled tasks are well :
     `Get-ScheduledTask ShadowCopy_C_6AM | Get-ScheduledTaskInfo`
+
+    You can list all the available shadow copies :
+    `vssadmin list shadows`
+
 #>
 
 Param(
