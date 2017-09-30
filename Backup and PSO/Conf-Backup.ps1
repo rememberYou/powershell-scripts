@@ -13,10 +13,10 @@
     Conf-Backup Configures the Windows Server Backup as well as the backup Disk.
 
 .EXAMPLE
-    PS C:\> Conf-Backup -Disk E
+    PS C:\> Conf-Backup -Disk E -Schedule 07:00
 
 .EXAMPLE
-    PS C:\> Conf-Backup -Disk E -ConfigureDisk yes
+    PS C:\> Conf-Backup -Disk E -Schedule 07:00 -ConfigureDisk yes
 
 .NOTES
     You can list all the available disks :
@@ -31,6 +31,10 @@ Param(
     [ValidateNotNullOrEmpty()]
     [String]
     $Disk,
+
+    [ValidateNotNullOrEmpty()]
+    [String]
+    $Schedule,
 
     [ValidateNotNullOrEmpty()]
     [String]
@@ -56,6 +60,9 @@ Add-WBSystemState -Policy $WBPolicy
 $target = New-WBBackupTarget -VolumePath "${Disk}:"
 
 Add-WBBackupTarget -Policy $WBPolicy -Target $target
+
+# Sets the times to create daily backups for the backup policy
+Set-WBSchedule -Policy $WBPolicy -Schedule "$Schedule"
 
 # Start the backup
 Start-WBBackup -Policy $WBPolicy
