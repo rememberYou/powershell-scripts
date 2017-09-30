@@ -25,6 +25,13 @@
     You can get a summary of previously run backup operations :
     `Get-WBSummary`
 
+    You can get infos about the current backup job :
+    `Get-WBJob`
+
+    You can get infos about the backup schedule :
+    `$WBPolicy = New-WBPolicy
+    Get-WBSchedule -Policy $WBPolicy`
+
 #>
 
 Param(
@@ -60,9 +67,10 @@ Add-WBSystemState -Policy $WBPolicy
 $target = New-WBBackupTarget -VolumePath "${Disk}:"
 
 Add-WBBackupTarget -Policy $WBPolicy -Target $target
-
-# Sets the times to create daily backups for the backup policy
-Set-WBSchedule -Policy $WBPolicy -Schedule "$Schedule"
+Set-WBPerformanceConfiguration -OverallPerformanceSetting AlwaysIncremental
 
 # Start the backup
 Start-WBBackup -Policy $WBPolicy
+
+# Sets the times to create daily backups for the backup policy
+Set-WBSchedule -Policy $WBPolicy -Schedule "$Schedule"
