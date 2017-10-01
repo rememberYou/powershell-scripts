@@ -24,6 +24,9 @@
                       -Gateway ACAD::1 -DnsPri ACAD::10 -DnsSec ACAD::11
 
 .NOTES
+    Check your InterfaceIndex with:
+    `Get-NetIPInterface -AddressFamily IPv6 | fl InterfaceAlias, InterfaceIndex, IPv6Address`
+
     You can verify your IP addresses configurations with:
     `netsh interface ipv6 show addresses`
 
@@ -68,8 +71,6 @@ Param(
     $DnsSec
 )
 
-# Use Get-NetIPInterface -AddressFamily IPv6 | fl InterfaceAlias, `
-# InterfaceIndex, IPv6Address
 New-NetIPAddress -AddressFamily IPv6 -IPAddress $IP `
   -InterfaceIndex $InterfaceIndex -PrefixLength $Length `
   -DefaultGateway $Gateway
@@ -79,7 +80,7 @@ Set-DnsClientServerAddress -InterfaceIndex $InterfaceIndex `
 
 # Disable tunnels.
 Set-Net6to4Configuration -State Disable
-netsh interface isatap set state state=disabled
+Netsh interface isatap set state state=disabled
 
 If(-Not [string]::IsNullOrEmpty($Name))
 {

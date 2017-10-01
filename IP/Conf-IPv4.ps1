@@ -20,6 +20,9 @@
                       -DnsSec 192.168.42.2
 
 .NOTES
+    Check your InterfaceIndex with:
+    `Get-NetIPInterface`
+
     You can verify your IP addresses configurations with:
     `netsh interface ipv4 show addresses`
 
@@ -56,7 +59,6 @@ Param(
     $DnsSec
 )
 
-# Use Get-NetIPInterface to get the InterfaceIndex.
 New-NetIPAddress -InterfaceIndex $InterfaceIndex -IPAddress $IP -PrefixLength $Length -DefaultGateway $Gateway
 Set-DnsClientServerAddress -InterfaceIndex $InterfaceIndex -ServerAddresses($DnsPri, $DnsSec)
 
