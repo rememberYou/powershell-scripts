@@ -37,12 +37,10 @@
 
     After created your certificates, you can easily sign your script like
     the following:
-
     $cert =(dir Cert:\CurrentUser\My -CodeSigningCert)[0]
     Set-AuthenticodeSignature .\foo.ps1 -Certificate $cert
 
     To check if the script is well signed:
-
     `Get-AuthenticodeSignature .\foo.ps1 | ft -AutoSize`
 #>
 
