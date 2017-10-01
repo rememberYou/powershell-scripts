@@ -19,19 +19,18 @@
     PS C:\> Conf-Backup -Disk E -Schedule 07:00 -ConfigureDisk yes
 
 .NOTES
-    You can list all the available disks :
-    `get-disk`
+    You can list all the available disks:
+    `Get-Disk`
 
-    You can get a summary of previously run backup operations :
+    You can get a summary of previously run backup operations:
     `Get-WBSummary`
 
-    You can get infos about the current backup job :
+    You can get infos about the current backup job:
     `Get-WBJob`
 
-    You can get infos about the backup schedule :
+    You can get infos about the backup schedule:
     `$WBPolicy = New-WBPolicy
     Get-WBSchedule -Policy $WBPolicy`
-
 #>
 
 Param(
@@ -50,7 +49,7 @@ Param(
 
 If ($ConfigureDisk -ne $Null) {
     # Configure the Backup disk
-    set-disk 1 -isOffline $false
+    Set-Disk 1 -IsOffline $false
     Initialize-Disk -Number 1 -PartitionStyle MBR
     New-Partition -DiskNumber 1 -UseMaximumSize -DriveLetter "$Disk"
     Format-volume -DriveLetter "$Disk" -FileSystem NTFS
