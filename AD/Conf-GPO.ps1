@@ -3,6 +3,7 @@
     Configures the GPO for the Active Directory.
     PowerSploit Function: Conf-GPO
     Author: Terencio Agozzino (@rememberYou)
+            Alexandre Ducobu (@Harchytekt)
     License: None
     Required Dependencies: None
     Optional Dependencies: None
@@ -43,5 +44,6 @@ Set-ExecutionPolicy AllSigned
 Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
 Set-ADDefaultDomainPasswordPolicy -Identity $ZoneName `
 -MinPasswordAge $MinPasswordAge -MaxPasswordAge $MaxPasswordAge `
--MinPasswordLength $MinPasswordLength
+  -MinPasswordLength $MinPasswordLength
+
 Invoke-GPUpdate -Force
