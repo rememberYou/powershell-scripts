@@ -30,6 +30,19 @@
 
     You can verify the DNS zones with:
     `Get-DnsServerZone`
+
+    For the example above, you can verify the DNS server resource records with:
+    `Get-DnsServerResourceRecord -ZoneName heh.lan`
+    `Get-DnsServerResourceRecord -ZoneName 168.192.in-addr.arpa`
+    `Get-DnsServerResourceRecord -ZoneName 0.0.0.0.0.0.0.0.0.0.0.0.d.a.c.a.ip6.arpa`
+
+    To check if the DNS is working well you can do:
+    `nslookup`
+
+    To check if the alias work you can do:
+    `nslookup www.heh.lan`
+    `nslookup srv1.heh.lan`
+    `nslookup srv2.heh.lan`
 #>
 
 Param(
@@ -99,10 +112,16 @@ Add-DnsServerResourceRecordCName -Name "SRV2" -HostNameAlias "$SRVSec.$ZoneName"
 Add-DnsServerResourceRecord -ZoneName "$ZoneName" -Name "." -NameServer "$SRVPri.$ZoneName" -NS
 Add-DnsServerResourceRecord -ZoneName "$ZoneName" -Name "." -NameServer "$SRVSec.$ZoneName" -NS
 
+# Remove the default Name Server
+Remove-DnsServerResourceRecord -ZoneName "$RevZoneNameV4" -RRType "Ns" -Name "@" -RecordData "srvdnsprimary" -Force
+
 Add-DnsServerResourceRecord -ZoneName "$RevZoneNameV4" -Name "." -NameServer "$SRVPri.$ZoneName" -NS
 Add-DnsServerResourceRecord -ZoneName "$RevZoneNameV4" -Name "." -NameServer "$SRVSec.$ZoneName" -NS
 
 If (-Not ([string]::IsNullOrEmpty($NetworkIDv6))) {
+    # Remove the default Name Server
+    Remove-DnsServerResourceRecord -ZoneName "$RevZoneNameV6" -RRType "Ns" -Name "@" -RecordData "srvdnsprimary" -Force
+
     Add-DnsServerResourceRecord -ZoneName "$RevZoneNameV6" -Name "." -NameServer "$SRVPri.$ZoneName" -NS
     Add-DnsServerResourceRecord -ZoneName "$RevZoneNameV6" -Name "." -NameServer "$SRVSec.$ZoneName" -NS
 }
