@@ -13,10 +13,7 @@
     Conf-Backup Configures the Windows Server Backup as well as the backup Disk.
 
 .EXAMPLE
-    PS C:\> Conf-Backup -Disk E -Schedule 07:00
-
-.EXAMPLE
-    PS C:\> Conf-Backup -Disk E -Schedule 07:00 -ConfigureDisk yes
+    PS C:\> Conf-Backup -Frequency Daily -Schedule 06:10
 
 .NOTES
     You can list all the available disks:
@@ -31,45 +28,41 @@
     You can get infos about the backup schedule:
     `$WBPolicy = New-WBPolicy
     Get-WBSchedule -Policy $WBPolicy`
+
+    You can check the Scheduled Backup in `taskschd.msc`, at this location:
+    `\Microsoft\Windows\Powershell\ScheduledJobs\`
 #>
 
 Param(
     [ValidateNotNullOrEmpty()]
     [String]
-    $Disk,
+    $Frequency,
 
     [ValidateNotNullOrEmpty()]
     [String]
-    $Schedule,
-
-    [ValidateNotNullOrEmpty()]
-    [String]
-    $ConfigureDisk
+    $Schedule
 )
 
-If ($ConfigureDisk -ne $Null) {
-    # Configure the Backup disk
-    Set-Disk 1 -IsOffline $false
-    Initialize-Disk -Number 1 -PartitionStyle MBR
-    New-Partition -DiskNumber 1 -UseMaximumSize -DriveLetter "$Disk"
-    Format-volume -DriveLetter "$Disk" -FileSystem NTFS
-}
+# Configure the Backup disk
+Set-Disk 1 -IsOffline $false
+Initialize-Disk -Number 1 -PartitionStyle MBR
+New-Partition -DiskNumber 1 -UseMaximumSize -DriveLetter "E"
+Format-volume -DriveLetter "E" -FileSystem NTFS
 
 # Install Windows Server Backup
 Install-WindowsFeature -Name Windows-Server-Backup -Restart:$false
 
-$WBPolicy = New-WBPolicy
-# Back up the System State
-Add-WBSystemState -Policy $WBPolicy
+Register-ScheduledJob -Name "System State Backup" -Trigger @{Frequency = "$Frequency"; At = "$Schedule"} -ScriptBlock {
+    $WBPolicy = New-WBPolicy
+    # Back up the System State
+    Add-WBSystemState -Policy $WBPolicy
 
-# Declare the backup location on the chosen Disk
-$target = New-WBBackupTarget -VolumePath "${Disk}:"
+    # Declare the backup location on the chosen Disk
+    $target = New-WBBackupTarget -VolumePath "E:"
 
-Add-WBBackupTarget -Policy $WBPolicy -Target $target
-Set-WBPerformanceConfiguration -OverallPerformanceSetting AlwaysIncremental
+    Add-WBBackupTarget -Policy $WBPolicy -Target $target
+    Set-WBPerformanceConfiguration -OverallPerformanceSetting AlwaysIncremental
 
-# Start the backup
-Start-WBBackup -Policy $WBPolicy
-
-# Sets the times to create daily backups for the backup policy
-Set-WBSchedule -Policy $WBPolicy -Schedule "$Schedule"
+    # Start the backup
+    Start-WBBackup -Policy $WBPolicy
+}
