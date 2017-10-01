@@ -1,6 +1,6 @@
 <#
 .SYNOPSIS
-    Sets a basic IPv4 configuration with the possibility to change the hostname 
+    Sets a basic IPv4 configuration with the possibility to change the hostname
     of the machine.
     PowerSploit Function: Conf-IPv4
     Author: Terencio Agozzino (@rememberYou)

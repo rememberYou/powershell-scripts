@@ -7,7 +7,7 @@
     Required Dependencies: None
     Optional Dependencies: None
     Version: 1.0.0
- 
+
 .DESCRIPTION
     Conf-GPO Configures the GPO for the Active Directory.
 
@@ -17,25 +17,27 @@
 .EXAMPLE
     PS C:\> Conf-GPO -ZoneName heh.lan -MinPasswordAge 1 -MaxPasswordAge 14 -MinPasswordLength 8
 
-.NOTES   
+.NOTES
     You can verify your ADDefaultDomainPasswordPolicy configuration with:
     `Get-ADDefaultDomainPasswordPolicy`
 #>
 
-Param(    
+Param(
     [ValidateNotNullOrEmpty()]
     [String]
     $ZoneName,
-    
+
     [TimeSpan]
     $MinPasswordAge=1,
-    
+
     [TimeSpan]
     $MaxPasswordAge=30,
 
     [Int32]
     $MinPasswordLength=10
 )
+
+Set-ExecutionPolicy AllSigned
 
 # Create GPO
 Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
