@@ -8,7 +8,7 @@
     Required Dependencies: None
     Optional Dependencies: None
     Version: 1.0.0
- 
+
 .DESCRIPTION
     Conf-DNSPrimary Installs the DNS service and sets a basic DNS primary configuration.
 
@@ -32,29 +32,29 @@
     `Get-DnsServerZone`
 #>
 
-Param(    
+Param(
     [ValidateNotNullOrEmpty()]
     [String]
-    $ZoneName,        
-    
+    $ZoneName,
+
     [ValidateNotNullOrEmpty()]
     [String]
     $NetworkIDv4,
-    
+
     [ValidateNotNullOrEmpty()]
     [String]
     $PrefixV4,
-   
+
     [ValidateNotNullOrEmpty()]
     [String]
     $RevZoneNameV4,
 
     [String]
     $NetworkIDv6,
-       
+
     [String]
     $PrefixV6,
-    
+
     [String]
     $RevZoneNameV6,
 
@@ -67,56 +67,50 @@ Param(
     $SRVSec
 )
 
-Function IsFeatureInstalled($Feature)
-{
-    return Get-WindowsFeature | Where-Object {$_.Name -like "$Feature" -and `
-      $($_.InstallState -eq "Installed" -or $_.InstallState -eq "InstallPending")}
+Import-Module ServerManager
+Add-WindowsFeature -Name DNS -IncludeManagementTools
+
+# Create Forward Lookup Zones
+Add-DnsServerPrimaryZone -Name "$ZoneName" -ZoneFile "$ZoneName.dns"
+
+# Create Reverse Lookup Zones
+Add-DnsServerPrimaryZone -NetworkId "$NetworkIDv4/$PrefixV4" -ZoneFile "$RevZoneNameV4.dns"
+If (-Not ([string]::IsNullOrEmpty($NetworkIDv6))) {
+    Add-DnsServerPrimaryZone -NetworkId "$NetworkIDv6/$PrefixV6" -ZoneFile "$RevZoneNameV6.dns"
 }
 
-If (-Not (IsFeatureInstalled("DNS"))) {
-    Import-Module ServerManager
-    Add-WindowsFeature -Name DNS -IncludeManagementTools
-    
-    # Create Forward Lookup Zones
-    Add-DnsServerPrimaryZone -Name "$ZoneName" -ZoneFile "$ZoneName.dns"
+# Create Records
+Add-DnsServerResourceRecordA -Name "$SRVPri" -ZoneName "$ZoneName" -AllowUpdateAny -IPv4Address "192.168.42.1" -CreatePtr
+If (-Not ([string]::IsNullOrEmpty($NetworkIDv6))) {
+    Add-DnsServerResourceRecordAAAA -Name "$SRVPri" -ZoneName "$ZoneName" -AllowUpdateAny -IPv6Address "ACAD::10" -CreatePtr
+}
 
-    # Create Reverse Lookup Zones
-    Add-DnsServerPrimaryZone -NetworkId "$NetworkIDv4/$PrefixV4" -ZoneFile "$RevZoneNameV4.dns"
-    If (-Not ([string]::IsNullOrEmpty($NetworkIDv6))) {
-	Add-DnsServerPrimaryZone -NetworkId "$NetworkIDv6/$PrefixV6" -ZoneFile "$RevZoneNameV6.dns"
-    }
+Add-DnsServerResourceRecordA -Name "$SRVSec" -ZoneName "$ZoneName" -AllowUpdateAny -IPv4Address "192.168.42.2" -CreatePtr
+If (-Not ([string]::IsNullOrEmpty($NetworkIDv6))) {
+    Add-DnsServerResourceRecordAAAA -Name "$SRVSec" -ZoneName "$ZoneName" -AllowUpdateAny -IPv6Address "ACAD::11" -CreatePtr
+}
 
-    # Create Records
-    Add-DnsServerResourceRecordA -Name "$SRVPri" -ZoneName "$ZoneName" -AllowUpdateAny -IPv4Address "192.168.42.1" -CreatePtr
-    If (-Not ([string]::IsNullOrEmpty($NetworkIDv6))) {
-	Add-DnsServerResourceRecordAAAA -Name "$SRVPri" -ZoneName "$ZoneName" -AllowUpdateAny -IPv6Address "ACAD::10" -CreatePtr
-    }
+# Create Alias
+Add-DnsServerResourceRecordCName -Name "www" -HostNameAlias "$SRVPri.$ZoneName" -ZoneName "$ZoneName"
+Add-DnsServerResourceRecordCName -Name "SRV1" -HostNameAlias "$SRVPri.$ZoneName" -ZoneName "$ZoneName"
+Add-DnsServerResourceRecordCName -Name "SRV2" -HostNameAlias "$SRVSec.$ZoneName" -ZoneName "$ZoneName"
 
-    Add-DnsServerResourceRecordA -Name "$SRVSec" -ZoneName "$ZoneName" -AllowUpdateAny -IPv4Address "192.168.42.2" -CreatePtr
-    If (-Not ([string]::IsNullOrEmpty($NetworkIDv6))) {
-	Add-DnsServerResourceRecordAAAA -Name "$SRVSec" -ZoneName "$ZoneName" -AllowUpdateAny -IPv6Address "ACAD::11" -CreatePtr
-    }
+# Create Name Servers
+Add-DnsServerResourceRecord -ZoneName "$ZoneName" -Name "." -NameServer "$SRVPri.$ZoneName" -NS
+Add-DnsServerResourceRecord -ZoneName "$ZoneName" -Name "." -NameServer "$SRVSec.$ZoneName" -NS
 
-    # Create Alias
-    Add-DnsServerResourceRecordCName -Name "www" -HostNameAlias "$SRVPri.$ZoneName" -ZoneName "$ZoneName"
-    Add-DnsServerResourceRecordCName -Name "SRV2" -HostNameAlias "$SRVSec.$ZoneName" -ZoneName "$ZoneName"
-    
-    # Create Name Servers
-    Add-DnsServerResourceRecord -ZoneName "$ZoneName" -Name "." -NameServer "$SRVPri.$ZoneName" -NS
-    Add-DnsServerResourceRecord -ZoneName "$ZoneName" -Name "." -NameServer "$SRVSec.$ZoneName" -NS
-    
-    Add-DnsServerResourceRecord -ZoneName "$RevZoneNameV4" -Name "." -NameServer "$SRVPri.$ZoneName" -NS
-    Add-DnsServerResourceRecord -ZoneName "$RevZoneNameV4" -Name "." -NameServer "$SRVSec.$ZoneName" -NS
-        
-    If (-Not ([string]::IsNullOrEmpty($NetworkIDv6))) {
-	Add-DnsServerResourceRecord -ZoneName "$RevZoneNameV6" -Name "." -NameServer "$SRVPri.$ZoneName" -NS
-	Add-DnsServerResourceRecord -ZoneName "$RevZoneNameV6" -Name "." -NameServer "$SRVSec.$ZoneName" -NS
-    }
+Add-DnsServerResourceRecord -ZoneName "$RevZoneNameV4" -Name "." -NameServer "$SRVPri.$ZoneName" -NS
+Add-DnsServerResourceRecord -ZoneName "$RevZoneNameV4" -Name "." -NameServer "$SRVSec.$ZoneName" -NS
 
-    # Create Transfert Zone
-    Start-DnsServerZoneTransfer -Name "$ZoneName"
+If (-Not ([string]::IsNullOrEmpty($NetworkIDv6))) {
+    Add-DnsServerResourceRecord -ZoneName "$RevZoneNameV6" -Name "." -NameServer "$SRVPri.$ZoneName" -NS
+    Add-DnsServerResourceRecord -ZoneName "$RevZoneNameV6" -Name "." -NameServer "$SRVSec.$ZoneName" -NS
+}
 
-    # Create Delegation Zone
-    Add-DnsServerZoneDelegation -Name "heh.lan" -ChildZoneName "delegation" `
-      -NameServer "SRVDNSSecondary.delegation.heh.lan" -IPAddress "192.168.42.2"
-} Else { Write-Host "The $Feature feature is already installed." }
+# Create a Incremental Transfert Zone where the secondary DNS server gets
+# new and changed resource records.
+Start-DnsServerZoneTransfer -Name "$ZoneName"
+
+# Create Delegation Zone
+Add-DnsServerZoneDelegation -Name "heh.lan" -ChildZoneName "delegation" `
+  -NameServer "SRVDNSSecondary.delegation.heh.lan" -IPAddress "192.168.42.2"

@@ -8,7 +8,7 @@
     Required Dependencies: None
     Optional Dependencies: None
     Version: 1.0.0
- 
+
 .DESCRIPTION
     Conf-DNSSeocndary Installs the DNS service and sets a basic DNS secondary configuration.
 
@@ -17,7 +17,7 @@
                               -PrefixV4 16 -RevZoneNameV4 168.192.in-addr.arpa `
                               -MasterServersV4 192.168.42.1
 
-.EXAMPLE    
+.EXAMPLE
     PS C:\> Conf-DNSSecondary -ZoneName heh.lan -NetworkIDv4 192.168.0.0 `
                               -PrefixV4 16 -RevZoneNameV4 168.192.in-addr.arpa `
                               -MasterServersV4 192.168.42.1 -NetworkIDv6 acad:: `
@@ -33,15 +33,15 @@
     `Get-DnsServerZone`
 #>
 
-Param(    
+Param(
     [ValidateNotNullOrEmpty()]
     [String]
-    $ZoneName,        
-    
+    $ZoneName,
+
     [ValidateNotNullOrEmpty()]
     [String]
     $NetworkIDv4,
-    
+
     [ValidateNotNullOrEmpty()]
     [String]
     $PrefixV4,
@@ -52,11 +52,11 @@ Param(
 
     [ValidateNotNullOrEmpty()]
     [String]
-    $MasterServersV4,    
-    
+    $MasterServersV4,
+
     [String]
     $NetworkIDv6,
-    
+
     [String]
     $PrefixV6,
 
@@ -67,32 +67,25 @@ Param(
     $MasterServersV6
 )
 
-Function IsFeatureInstalled($Feature) {
-    return Get-WindowsFeature | Where-Object {$_.Name -like "$Feature" -and `
-      $($_.InstallState -eq "Installed" -or $_.InstallState -eq "InstallPending")}
+Import-Module ServerManager
+Add-WindowsFeature -Name DNS -IncludeManagementTools
+
+# Create Forward Lookup Zones
+Add-DnsServerSecondaryZone -Name "$ZoneName" -ZoneFile "$ZoneName.dns" -MasterServers "$MasterServersV4"
+Add-DnsServerPrimaryZone -Name "delegation.$ZoneName" -ZoneFile "delegation.$ZoneName.dns"
+
+# Create Reverse Lookup Zones
+Add-DnsServerSecondaryZone -NetworkId "$NetworkIDv4/$PrefixV4" -ZoneFile "$RevZoneNameV4.dns" -MasterServers "$MasterServersV4"
+If (-Not ([string]::IsNullOrEmpty($NetworkIDv6))) {
+    Add-DnsServerSecondaryZone -networkId "$NetworkIDv6/$PrefixV6" -ZoneFile "$RevZoneNameV6.dns" -MasterServers "$MasterServersV6"
 }
 
-If (-Not (IsFeatureInstalled("DNS"))) {
-    Import-Module ServerManager
-    Add-WindowsFeature -Name DNS -IncludeManagementTools
-    
-    # Create Forward Lookup Zones
-    Add-DnsServerSecondaryZone -Name "$ZoneName" -ZoneFile "$ZoneName.dns" -MasterServers "$MasterServersV4"
-    Add-DnsServerPrimaryZone -Name "delegation.$ZoneName" -ZoneFile "delegation.$ZoneName.dns"
-    
-    # Create Reverse Lookup Zones
-    Add-DnsServerSecondaryZone -NetworkId "$NetworkIDv4/$PrefixV4" -ZoneFile "$RevZoneNameV4.dns" -MasterServers "$MasterServersV4"
-    If (-Not ([string]::IsNullOrEmpty($NetworkIDv6))) {
-	Add-DnsServerSecondaryZone -networkId "$NetworkIDv6/$PrefixV6" -ZoneFile "$RevZoneNameV6.dns" -MasterServers "$MasterServersV6"
-    }
+# Create Records
+Add-DnsServerResourceRecordA -Name "SRVDNSPrimary" -ZoneName "delegation.$ZoneName" -AllowUpdateAny -IPv4Address "192.168.42.1"
+If (-Not ([string]::IsNullOrEmpty($NetworkIDv6))) {
+    Add-DnsServerResourceRecordAAAA -Name "SRVDNSPrimary" -ZoneName "delegation.$ZoneName" -AllowUpdateAny -IPv6Address "ACAD::10"
+}
 
-    # Create Records
-    Add-DnsServerResourceRecordA -Name "SRVDNSPrimary" -ZoneName "delegation.$ZoneName" -AllowUpdateAny -IPv4Address "192.168.42.1"
-    If (-Not ([string]::IsNullOrEmpty($NetworkIDv6))) {
-	Add-DnsServerResourceRecordAAAA -Name "SRVDNSPrimary" -ZoneName "delegation.$ZoneName" -AllowUpdateAny -IPv6Address "ACAD::10"
-    }
-
-    # Create Name Servers
-    Add-DnsServerResourceRecord -ZoneName "delegation.$ZoneName" -Name "." -NameServer "SRVDNSPrimary.$ZoneName" -NS    
-    Add-DnsServerResourceRecord -ZoneName "delegation.$ZoneName" -Name "." -NameServer "SRVDNSSecondary.$ZoneName" -NS    
-} Else { Write-Host "The $Feature feature is already installed." }
+# Create Name Servers
+Add-DnsServerResourceRecord -ZoneName "delegation.$ZoneName" -Name "." -NameServer "SRVDNSPrimary.$ZoneName" -NS
+Add-DnsServerResourceRecord -ZoneName "delegation.$ZoneName" -Name "." -NameServer "SRVDNSSecondary.$ZoneName" -NS
