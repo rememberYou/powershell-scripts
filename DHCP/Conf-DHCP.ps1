@@ -86,7 +86,7 @@ Set-DhcpServerv4OptionValue -DnsDomain 'heh.lan' -DnsServer "$DnsServer"
 # IPv6
 # LifeTime format is day.hrs:mins:secs
 Add-DhcpServerv6Scope -Name 'employees scope (IPv6)' -Prefix "$PrefixV6" -PreferredLifeTime "$LifeTime" -ValidLifeTime "$LifeTime" -Description 'Created for the employees' -ComputerName "$ComputerName" -State Active
-Add-DhcpServerv6ExclusionRange -Prefix "$PrefixV6" -StartRange 2001:db8:cafe:10::3 -EndRange 2001:db8:cafe:10::FFFF
+Add-DhcpServerv6ExclusionRange -Prefix "$PrefixV6" -StartRange 2001:db8:cafe:10::1 -EndRange 2001:db8:cafe:10::FFFF
 Add-DhcpServerv6ExclusionRange -Prefix "$PrefixV6" -StartRange 2001:db8:cafe:10::1:200 -EndRange 2001:db8:cafe:10:FFFF:FFFF:FFFF:FFFF
 # OptionID 23 stand for DNS
 Set-DhcpServerv6OptionValue -OptionId 23 -Value 2001:db8:cafe:10::1 -ComputerName "$ComputerName"
