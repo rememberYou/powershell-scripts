@@ -92,6 +92,9 @@ If (-Not ([string]::IsNullOrEmpty($NetworkIDv6))) {
     Add-DnsServerPrimaryZone -NetworkId "$NetworkIDv6/$PrefixV6" -ZoneFile "$RevZoneNameV6.dns"
 }
 
+# Remove the default Name Server
+Remove-DnsServerResourceRecord -ZoneName "$ZoneName" -RRType "Ns" -Name "@" -RecordData "srvdnsprimary" -Force
+
 # Create Records
 Add-DnsServerResourceRecordA -Name "$SRVPri" -ZoneName "$ZoneName" -AllowUpdateAny -IPv4Address "192.168.42.1" -CreatePtr
 If (-Not ([string]::IsNullOrEmpty($NetworkIDv6))) {
