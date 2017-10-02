@@ -22,8 +22,8 @@
                               -PrefixV4 16 -RevZoneNameV4 168.192.in-addr.arpa `
                               -MasterServersV4 192.168.42.1 -NetworkIDv6 acad:: `
                               -PrefixV6 64 `
-                              -RevZoneNameV6 0.0.0.0.0.0.0.0.0.0.0.0.d.a.c.a.ip6.arpa `
-                              -MasterServersV6 ACAD::10
+                              -RevZoneNameV6 0.1.0.0.e.f.a.c.8.b.d.0.1.0.0.2.ip6.arpa `
+                              -MasterServersV6 2001:db8:cafe:10::1
 
 .NOTES
     You can verify the DNS installation with:
@@ -35,7 +35,7 @@
     For the example above, you can verify the DNS server resource records with:
     `Get-DnsServerResourceRecord -ZoneName heh.lan`
     `Get-DnsServerResourceRecord -ZoneName 168.192.in-addr.arpa`
-    `Get-DnsServerResourceRecord -ZoneName 0.0.0.0.0.0.0.0.0.0.0.0.d.a.c.a.ip6.arpa`
+    `Get-DnsServerResourceRecord -ZoneName 0.1.0.0.e.f.a.c.8.b.d.0.1.0.0.2.ip6.arpa `
 
     To check if the DNS is working well you can do:
     `nslookup`
@@ -97,7 +97,7 @@ If (-Not ([string]::IsNullOrEmpty($NetworkIDv6))) {
 # Create Records
 Add-DnsServerResourceRecordA -Name "SRVDNSPrimary" -ZoneName "delegation.$ZoneName" -AllowUpdateAny -IPv4Address "192.168.42.1"
 If (-Not ([string]::IsNullOrEmpty($NetworkIDv6))) {
-    Add-DnsServerResourceRecordAAAA -Name "SRVDNSPrimary" -ZoneName "delegation.$ZoneName" -AllowUpdateAny -IPv6Address "ACAD::10"
+    Add-DnsServerResourceRecordAAAA -Name "SRVDNSPrimary" -ZoneName "delegation.$ZoneName" -AllowUpdateAny -IPv6Address "2001:db8:cafe:10::1"
 }
 
 # Create Name Servers

@@ -15,13 +15,13 @@
     hostname of the machine.
 
 .EXAMPLE
-    PS C:\> Conf-IPv6 -Name SRVDNSPrimary -InterfaceIndex 5 -IP ACAD::10 `
-                      -Length 64 -Gateway ACAD::1 -DnsPri ACAD::10 `
-                      -DnsSec ACAD::11
+    PS C:\> Conf-IPv6 -Name SRVDNSPrimary -InterfaceIndex 5 -IP 2001:db8:cafe:10::1 `
+                      -Length 64 -Gateway 2001:db8:cafe:10::254 -DnsPri 2001:db8:cafe:10::1 `
+                      -DnsSec 2001:db8:cafe:10::2
 
 .EXAMPLE
-    PS C:\> Conf-IPv6 -InterfaceIndex 5 -IP ACAD::10 -Length 64 `
-                      -Gateway ACAD::1 -DnsPri ACAD::10 -DnsSec ACAD::11
+    PS C:\> Conf-IPv6 -InterfaceIndex 5 -IP 2001:db8:cafe:10::1 -Length 64 `
+                      -Gateway 2001:db8:cafe:10::254 -DnsPri 2001:db8:cafe:10::1 -DnsSec 2001:db8:cafe:10::2
 
 .NOTES
     Check your InterfaceIndex with:

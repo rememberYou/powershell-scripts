@@ -16,7 +16,8 @@
     PS C:\> Conf-DHCP -StartRangeV4 192.168.1.1 -EndRangeV4 192.168.2.254 `
                             -ScopeIDV4 192.168.1.0 -SubnetMaskV4 255.255.0.0 `
                             -DnsServer 192.168.42.1 -ComputerName 'SRVDNSPrimary' `
-                            -DnsDomain 'heh.lan' -PrefixV6 ACAD:: -LifeTime 2.00:00:00
+                            -DnsDomain 'heh.lan' -PrefixV6 2001:db8:cafe:10::1 `
+                            -LifeTime 2.00:00:00
 
 .NOTES
     You can verify the DHCP installation with:
@@ -85,7 +86,7 @@ Set-DhcpServerv4OptionValue -DnsDomain 'heh.lan' -DnsServer "$DnsServer"
 # IPv6
 # LifeTime format is day.hrs:mins:secs
 Add-DhcpServerv6Scope -Name 'employees scope (IPv6)' -Prefix "$PrefixV6" -PreferredLifeTime "$LifeTime" -ValidLifeTime "$LifeTime" -Description 'Created for the employees' -ComputerName "$ComputerName" -State Active
-Add-DhcpServerv6ExclusionRange -Prefix "$PrefixV6" -StartRange ACAD::1 -EndRange ACAD::FFFF
-Add-DhcpServerv6ExclusionRange -Prefix "$PrefixV6" -StartRange ACAD::1:200 -EndRange ACAD::FFFF:FFFF:FFFF:FFFF
+Add-DhcpServerv6ExclusionRange -Prefix "$PrefixV6" -StartRange 2001:db8:cafe:10::3 -EndRange 2001:db8:cafe:10::FFFF
+Add-DhcpServerv6ExclusionRange -Prefix "$PrefixV6" -StartRange 2001:db8:cafe:10::1:200 -EndRange 2001:db8:cafe:10:FFFF:FFFF:FFFF:FFFF
 # OptionID 23 stand for DNS
-Set-DhcpServerv6OptionValue -OptionId 23 -Value ACAD::10 -ComputerName "$ComputerName"
+Set-DhcpServerv6OptionValue -OptionId 23 -Value 2001:db8:cafe:10::1 -ComputerName "$ComputerName"

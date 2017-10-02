@@ -20,8 +20,8 @@
 .EXAMPLE
     PS C:\> Conf-DNSPrimary -ZoneName heh.lan -NetworkIDv4 192.168.0.0 `
                             -PrefixV4 16 -RevZoneNameV4 168.192.in-addr.arpa `
-                            -NetworkIDv6 acad:: -PrefixV6 64 `
-                            -RevZoneNameV6 0.0.0.0.0.0.0.0.0.0.0.0.d.a.c.a.ip6.arpa `
+                            -NetworkIDv6 2001:db8:cafe:10:: -PrefixV6 64 `
+                            -RevZoneNameV6 0.1.0.0.e.f.a.c.8.b.d.0.1.0.0.2.ip6.arpa `
                             -SRVPri SRVDNSPrimary -SRVSec SRVDNSSecondary
 
 .NOTES
@@ -34,10 +34,10 @@
     For the example above, you can verify the DNS server resource records with:
     `Get-DnsServerResourceRecord -ZoneName heh.lan`
     `Get-DnsServerResourceRecord -ZoneName 168.192.in-addr.arpa`
-    `Get-DnsServerResourceRecord -ZoneName 0.0.0.0.0.0.0.0.0.0.0.0.d.a.c.a.ip6.arpa`
+    `Get-DnsServerResourceRecord -ZoneName 0.1.0.0.e.f.a.c.8.b.d.0.1.0.0.2.ip6.arpa`
 
     To check if the DNS is working well you can do:
-    `nslookup`
+    `nslookup 192.168.42.1`
 
     To check if the alias work you can do:
     `nslookup www.heh.lan`
@@ -98,12 +98,12 @@ Remove-DnsServerResourceRecord -ZoneName "$ZoneName" -RRType "Ns" -Name "@" -Rec
 # Create Records
 Add-DnsServerResourceRecordA -Name "$SRVPri" -ZoneName "$ZoneName" -AllowUpdateAny -IPv4Address "192.168.42.1" -CreatePtr
 If (-Not ([string]::IsNullOrEmpty($NetworkIDv6))) {
-    Add-DnsServerResourceRecordAAAA -Name "$SRVPri" -ZoneName "$ZoneName" -AllowUpdateAny -IPv6Address "ACAD::10" -CreatePtr
+    Add-DnsServerResourceRecordAAAA -Name "$SRVPri" -ZoneName "$ZoneName" -AllowUpdateAny -IPv6Address "2001:db8:cafe:10::1" -CreatePtr
 }
 
 Add-DnsServerResourceRecordA -Name "$SRVSec" -ZoneName "$ZoneName" -AllowUpdateAny -IPv4Address "192.168.42.2" -CreatePtr
 If (-Not ([string]::IsNullOrEmpty($NetworkIDv6))) {
-    Add-DnsServerResourceRecordAAAA -Name "$SRVSec" -ZoneName "$ZoneName" -AllowUpdateAny -IPv6Address "ACAD::11" -CreatePtr
+    Add-DnsServerResourceRecordAAAA -Name "$SRVSec" -ZoneName "$ZoneName" -AllowUpdateAny -IPv6Address "2001:db8:cafe:10::2" -CreatePtr
 }
 
 # Create Alias
