@@ -7,7 +7,7 @@ set up your own server.
 Feel free to use the code for your own purposes and contribute to this repository if
 you notice any mistakes.
 
-[logo]: assets/Powershell_64.png
+[logo]: assets/Powershell_black_64.png
 
 ## Supported roles and features [7/10]
 
