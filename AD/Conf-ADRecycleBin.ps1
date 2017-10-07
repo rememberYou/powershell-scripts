@@ -13,7 +13,7 @@
     Conf-ADRecycleBin Enables the AD Recycle Bin.
 
 .EXAMPLE
-    PS C:\> Conf-ADRecycleBin -NetbiosName HEH-STUDENT
+    PS C:\> Conf-ADRecycleBin -NetbiosName HEH
 #>
 
 Param(
