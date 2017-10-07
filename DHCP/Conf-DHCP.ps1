@@ -13,7 +13,7 @@
     Conf-DHCP Installs the DHCP service and sets a basic DHCP configuration.
 
 .EXAMPLE
-    PS C:\> Conf-DHCP -StartRangeV4 192.168.1.1 -EndRangeV4 192.168.2.254 `
+    PS C:\> Conf-DHCP -StartRangeV4 192.168.1.2 -EndRangeV4 192.168.2.254 `
                             -ScopeIDV4 192.168.1.0 -SubnetMaskV4 255.255.0.0 `
                             -DnsServer 192.168.42.1 -ComputerName 'SRVDNSPrimary' `
                             -DnsDomain 'heh.lan' -PrefixV6 2001:db8:cafe:10::1 `
