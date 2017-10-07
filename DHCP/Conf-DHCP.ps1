@@ -26,9 +26,9 @@
     You can verify the DHCP configuration with:
     `Get-DhcpServerv4Scope -cn srvdnsprimary | select scopeid, name, description`
 
-    There are 242 employees, we choose this scope: 192.168.1.0 -> 192.168.2.255 
+    There are 242 employees, we choose this scope: 192.168.1.0 -> 192.168.2.255
     to prevent more than 25% of the current employees.
-   
+
     The scope gateway is 192.168.1.1
 #>
 

@@ -7,7 +7,7 @@
     Required Dependencies: None
     Optional Dependencies: None
     Version: 1.0.0
- 
+
 .DESCRIPTION
     Conf-AD Installs the Active Directory service and sets a AD configuration.
 
@@ -25,11 +25,11 @@
     `Get-ADDomain`
 #>
 
-Param(    
+Param(
     [ValidateNotNullOrEmpty()]
     [String]
     $DomainName,
-        
+
     [String]
     $NetbiosName
 )
@@ -39,7 +39,7 @@ Function Get-NetbiosName($DomainName) {
 }
 
 Import-Module Servermanager
-Add-WindowsFeature AD-Domain-Services
+Add-WindowsFeature AD-Domain-Services -IncludeManagementTools
 
 Import-Module ADDSDeployment
 
@@ -53,7 +53,6 @@ If ([string]::IsNullOrEmpty($NetbiosName)) {
     -ForestMode "Default" `
     -InstallDns:$true `
     -LogPath "C:\Windows\NTDS" `
-    -NoRebootOnCompletion:$false `
     -SysvolPath "C:\Windows\SYSVOL" `
     -Force:$true
 } Else {
@@ -66,7 +65,6 @@ If ([string]::IsNullOrEmpty($NetbiosName)) {
     -ForestMode "Default" `
     -InstallDns:$true `
     -LogPath "C:\Windows\NTDS" `
-    -NoRebootOnCompletion:$false `
     -SysvolPath "C:\Windows\SYSVOL" `
     -Force:$true
 }

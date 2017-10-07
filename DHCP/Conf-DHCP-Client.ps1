@@ -17,8 +17,7 @@
 
 .NOTES
     You can displays a list of connected and disconnected network adapters with:
-    `netsh interface ipv6 show interfaces`
-
+    `Netsh interface ipv6 show interfaces`
 #>
 
 Param(
