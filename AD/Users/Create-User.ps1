@@ -65,8 +65,6 @@ Try {
 foreach ($user in $csv) {
     $Employees += [Employee]::new($user.Name, $user.Firstname, $user.Description,
 				      $user.Department)
-    # Premiere lettre du prenom et nom complet
-    # Si trop de caractere, alors on coupe des deux cotéæ
 
     $San = ($user.Firstname).substring(0, 2) + "." + $user.Name
 
