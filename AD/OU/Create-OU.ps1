@@ -44,7 +44,7 @@ foreach ($ou in $csv) {
     $Path = "DC=heh,DC=lan"
 
     If ($csv.IndexOf($ou) -eq 0) {
-        $DirRoot = "C:\shared\$($ou.Name)"
+        $DirRoot = "C:\Shared\"
         $NameRoot = $ou.Name
     }
 
