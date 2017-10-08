@@ -1,25 +1,25 @@
 ﻿Direction,
-Ressources humaines,Direction
+Ressources humaines,
 Gestion du personnel,Ressources humaines
 Recrutement,Ressources humaines
-R&D,Direction
+R&D,
 Recherche,R&D
 Testing,R&D
-Marketing,Direction
+Marketing,
 Site1,Marketing
 Site2,Marketing
 Site3,Marketing
 Site4,Marketing
-Finances,Direction
+Finances,
 Comptabilité,Finances
 Investissements,Finances
-Technique,Direction
+Technique,
 Techniciens,Technique
 Achat,Technique
-Commerciaux,Direction
+Commerciaux,
 Sédentaires,Commerciaux
 Technico,Commerciaux
-Informatique,Direction
+Informatique,
 Systèmes,Informatique
 Développement,Informatique
 HotLine,Informatique

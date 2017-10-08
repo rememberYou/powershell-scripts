@@ -41,17 +41,15 @@ Try {
 
 foreach ($ou in $csv) {
 
+    $Path = "DC=heh,DC=lan"
+
     If ($csv.IndexOf($ou) -eq 0) {
         $DirRoot = "C:\shared\$($ou.Name)"
         $NameRoot = $ou.Name
     }
 
-    If ($ou.Parent -ne $NameRoot -and $ou.Parent -ne "") {
-        $Path = "OU=$($ou.Parent),OU=$NameRoot,DC=heh,DC=lan"
-    } ElseIf ($ou.Parent -eq $NameRoot) {
+    If ($ou.Parent -ne "") {
         $Path = "OU=$($ou.Parent),DC=heh,DC=lan"
-    } Else {
-        $Path = "DC=heh,DC=lan"
     }
 
     New-ADOrganizationalUnit -Name $ou.Name -Path $Path `
@@ -64,11 +62,11 @@ foreach ($ou in $csv) {
     }
 
     If ($csv.IndexOf($ou) -eq 0) {
-    	New-Item "$DirRoot" -Type Directory
-    } ElseIf ($ou.Parent -ne $NameRoot) {
-    	New-Item "$DirRoot\$($ou.Parent)\$($ou.Name)" -Type Directory
-    } Else {
+    	New-Item "$DirRoot\$NameRoot" -Type Directory
+    } ElseIf ($ou.Parent -eq "") {
     	New-Item "$DirRoot\$($ou.Name)" -Type Directory
+    } Else {
+    	New-Item "$DirRoot\$($ou.Parent)\$($ou.Name)" -Type Directory
     }
 }
 

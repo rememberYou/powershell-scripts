@@ -29,10 +29,6 @@
 Param(
     [ValidateNotNullOrEmpty()]
     [String]
-    $RootDir,
-
-    [ValidateNotNullOrEmpty()]
-    [String]
     $File
 )
 
@@ -68,6 +64,7 @@ foreach ($user in $csv) {
 
     $San = ($user.Firstname).substring(0, 2) + "." + $user.Name
 
+    # Can make problem with the password complexity. Disable it with the GPO.
     $RandObj = New-Object System.Random
     $GenPassword=""
     1..12 | ForEach { $GenPassword = $GenPassword + [char]$RandObj.Next(33,126) }
@@ -84,13 +81,8 @@ foreach ($user in $csv) {
 
     $Upn = ("$San@heh.lan").ToLower()
 
-    $Ou = "OU=$($user.Department)" -replace "/", ",OU="
 
-    If (-Not ($user.Department.Contains("$RootDir"))) {
-        $Ou = "OU=$($user.Department),OU=$RootDir" -replace "/", ",OU="
-    } Else {
-	$Ou = "OU=$($user.Department)" -replace "/", ",OU="
-    }
+    $Ou = "OU=$($user.Department)" -replace "/", ",OU="
 
     New-ADUser -Name "$($user.Firstname) $($user.Name)" `
     -DisplayName "$($user.Firstname) $($user.Name)" `
