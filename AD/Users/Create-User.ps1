@@ -82,7 +82,6 @@ foreach ($user in $csv) {
 
     $Upn = ("$San@heh.lan").ToLower()
 
-
     $Ou = "OU=$($user.Department)" -replace "/", ",OU="
 
     New-ADUser -Name "$($user.Firstname) $($user.Name)" `
@@ -91,7 +90,13 @@ foreach ($user in $csv) {
     -GivenName $user.Firstname -Surname $user.Name `
     -Description $user.Description `
     -AccountPassword (ConvertTo-SecureString "$GenPassword" -AsPlainText -Force) `
-    -Enabled $true -Path "$Ou,DC=heh,DC=lan"
+      -Enabled $true -Path "$Ou,DC=heh,DC=lan"
+
+    If ($User.Department.Contains('/')) {
+	Add-ADGroupMember -Identity "GS_$($user.Department.Split('/')[0])" -Members "$San"
+    } Else {
+	Add-ADGroupMember -Identity "GS_$($user.Department)" -Members "$San"
+    }
 }
 
 Write-Host "Done."

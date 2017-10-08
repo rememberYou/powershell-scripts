@@ -28,7 +28,7 @@ Param(
     $File
 )
 
-New-Item "C:\shared\Common" -Type Directory
+New-Item "C:\Shared\Common" -Type Directory
 
 Import-Module ActiveDirectory
 
@@ -54,11 +54,13 @@ foreach ($ou in $csv) {
 
     New-ADOrganizationalUnit -Name $ou.Name -Path $Path `
       -Description "$($ou.Name) Organizational Unit"
-    New-ADGroup "$($ou.Name)" -Path "OU=$($ou.Name),$Path" `
+    New-ADGroup "GS_$($ou.Name)" -Path "OU=$($ou.Name),$Path" `
       -Description "$($ou.Name) Group" -GroupScope DomainLocal
 
     If ($ou.Parent -ne "") {
-    	Add-ADGroupMember -Identity "$($ou.Parent)" -Members "$($ou.Name)"
+	echo "$($ou.Parent)"
+	echo "$($ou.Name)"
+    	Add-ADGroupMember -Identity "GS_$($ou.Parent)" -Members "GS_$($ou.Name)"
     }
 
     If ($csv.IndexOf($ou) -eq 0) {
