@@ -58,14 +58,15 @@ Try {
     Write-Host "Can't load the file: $file" -Foreground Red
 }
 
+# Can make problem with the password complexity. Disable it with the GPO.
+$RandObj = New-Object System.Random
+
 foreach ($user in $csv) {
     $Employees += [Employee]::new($user.Name, $user.Firstname, $user.Description,
 				      $user.Department)
 
     $San = ($user.Firstname).substring(0, 2) + "." + $user.Name
 
-    # Can make problem with the password complexity. Disable it with the GPO.
-    $RandObj = New-Object System.Random
     $GenPassword=""
     1..12 | ForEach { $GenPassword = $GenPassword + [char]$RandObj.Next(33,126) }
 
