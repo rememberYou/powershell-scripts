@@ -72,4 +72,4 @@ foreach ($ou in $csv) {
     }
 }
 
-Write-Host "$($(Get-ADOrganizationalUnit -Filter *).count) Organizational Units added."
+Write-Host "$($(Get-ADOrganizationalUnit -Filter *).Count) Organizational Units added."
