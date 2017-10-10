@@ -38,7 +38,7 @@ Example for installing DHCP Server Role with Windows PowerShell:
 
 	PS> git clone git@github.com:rememberYou/powershell-scripts.git
 	PS> cd powershell-scripts/DHCP/
-	PS> .\Conf-DHCP.ps1 -StartRangeV4 192.168.1.1 -EndRangeV4 192.168.2.254 `
+	PS> .\Conf-DHCP.ps1 -StartRangeV4 192.168.1.2 -EndRangeV4 192.168.2.254 `
                             -ScopeIDV4 192.168.1.0 -SubnetMaskV4 255.255.0.0 `
                             -DnsServer 192.168.42.1 -ComputerName 'SRVDNSPrimary' `
                             -DnsDomain 'heh.lan' -PrefixV6 2001:db8:cafe:10::1 `
