@@ -9,16 +9,17 @@ you notice any mistakes.
 
 [logo]: Assets/Powershell_black_64.png
 
-## Supported roles and features [7/10]
+## Supported roles and features [8/11]
 
 	- [ ] AD (with ADRecycleBin)
 	- [x] Backups
 	- [x] Basic Firewall
 	- [x] Basic IPv4 and IPv6
-	- [ ] DHCPv4 and DHCPv6
+	- [x] DHCPv4 and DHCPv6
 	- [x] DNSv4 and DNSv6
 	- [ ] GPO
 	- [x] Self-Signed Certificates
+	- [ ] Authority-Signed Certificates
 	- [x] Shadow Copies
 	- [x] Time Zone
 
