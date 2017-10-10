@@ -54,13 +54,14 @@ foreach ($ou in $csv) {
 
     New-ADOrganizationalUnit -Name $ou.Name -Path $Path `
       -Description "$($ou.Name) Organizational Unit"
-    New-ADGroup "GS_$($ou.Name)" -Path "OU=$($ou.Name),$Path" `
-      -Description "$($ou.Name) Group" -GroupScope DomainLocal
 
-    If ($ou.Parent -ne "") {
-	echo "$($ou.Parent)"
-	echo "$($ou.Name)"
-    	Add-ADGroupMember -Identity "GS_$($ou.Parent)" -Members "GS_$($ou.Name)"
+    If ($ou.Parent -eq "") {
+	New-ADGroup "GR_$($ou.Name)" -Path "OU=$($ou.Name),$Path" `
+	  -Description "$($ou.Name) Group" -GroupScope Global
+    } Else {
+	New-ADGroup "GS_$($ou.Name)" -Path "OU=$($ou.Name),$Path" `
+	  -Description "$($ou.Name) Group" -GroupScope Global
+	Add-ADGroupMember -Identity "GR_$($ou.Parent)" -Members "GS_$($ou.Name)"
     }
 
     If ($csv.IndexOf($ou) -eq 0) {

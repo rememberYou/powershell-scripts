@@ -20,5 +20,5 @@
     Get-NetFirewallRule -DisplayGroup "File And Printer Sharing"
 #>
 
-# Enable ICMPv4 to ping to the system.
+# Enable ICMPv4 and IMCPv6 to ping to the system.
 Set-NetFirewallRule -DisplayGroup "File And Printer Sharing" -Enabled True

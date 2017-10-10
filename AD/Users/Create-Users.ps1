@@ -12,7 +12,7 @@
     Creates users according to a ".csv" file.
 
 .EXAMPLE
-    PS C:\> Create-User -File C:\Users\Administrator\Desktop\users-example.csv `
+    PS C:\> Create-Users -File C:\Users\Administrator\Desktop\users-example.csv `
                         -RootDir Direction
 
 .NOTES
@@ -80,6 +80,8 @@ foreach ($user in $csv) {
 	  + $user.Name.Split(" ")[-1]
     }
 
+    $Mail = ("$($user.Firstname).$($user.Name)" -replace " ", "").ToLower()
+
     $Upn = ("$San@heh.lan").ToLower()
 
     $Ou = "OU=$($user.Department)" -replace "/", ",OU="
@@ -88,9 +90,9 @@ foreach ($user in $csv) {
     -DisplayName "$($user.Firstname) $($user.Name)" `
     -SamAccountName $San -UserPrincipalName "$upn" `
     -GivenName $user.Firstname -Surname $user.Name `
-    -Description $user.Description `
+    -EmailAddress $Mail -Description $user.Description `
     -AccountPassword (ConvertTo-SecureString "$GenPassword" -AsPlainText -Force) `
-      -Enabled $true -Path "$Ou,DC=heh,DC=lan"
+    -Enabled $true -Path "$Ou,DC=heh,DC=lan"
 
     If ($User.Department.Contains('/')) {
 	Add-ADGroupMember -Identity "GS_$($user.Department.Split('/')[0])" -Members "$San"
