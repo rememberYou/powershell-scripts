@@ -81,7 +81,7 @@ foreach ($user in $csv) {
 	  + $user.Name.Split(" ")[-1]
     }
 
-    $Mail = ("$($user.Firstname).$($user.Name)" -replace " ", "").ToLower()
+    $Mail = ("$($user.Firstname).$($user.Name)@heh.lan" -replace " ", "").ToLower()
 
     $Upn = ("$San@heh.lan").ToLower()
 
