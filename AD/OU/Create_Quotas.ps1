@@ -150,8 +150,8 @@ Function SetMail ($folder)
 Function SetQuota($folder, $limit)
 {
     $mail = SetMail -folder $folder
-    $mailAction = New-FsrmAction Email -MailTo $mail -Subject "Warning: Approaching storage limit" -Body "The users are about to reach the end of the available storage in the $folder folder."
-    $logAction = New-FsrmAction Event -EventType Information -Body "The $folder folder is mostly full." -RunLimitInterval 60
+    $mailAction = New-FsrmAction Email -MailTo $mail -Subject "Warning: Approaching storage limit" -Body "The users are about to reach the end of the available storage in the $folder folder ($limit%)."
+    $logAction = New-FsrmAction Event -EventType Information -Body "The $folder folder is mostly full ($limit%)." -RunLimitInterval 60
     $80Threshold = New-FsrmQuotaThreshold -Percentage 80 -Action $mailAction
     $90Threshold = New-FsrmQuotaThreshold -Percentage 90 -Action $mailAction,$logAction
     $100Threshold = New-FsrmQuotaThreshold -Percentage 100 -Action $mailAction,$logAction
