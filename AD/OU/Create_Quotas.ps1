@@ -13,7 +13,7 @@
     Create_Quotas Creates the quotas for all departments' shared folder.
 
 .EXAMPLE
-    PS C:\> Create_Quotas -File C:\Users\Administrator\Desktop\ou-example.csv
+    PS C:\> Create_Quotas
 
 .NOTES
     Take a look at the "ou-example.csv" file for the specific structure
@@ -27,9 +27,6 @@ Install-WindowsFeature -Name FS-Resource-Manager, RSAT-FSRM-Mgmt
 
 # Create Templates
 New-FsrmQuotaTemplate -Name "500 MB limit" -Description "limit usage to 500 MB." -Size 500MB
-# New-FsrmQuotaTemplate -Name "100MB limit" -Description "limit usage to 100 MB." -Size 100MB
-
-
 
 # Apply template to the Shared Folder
 $Departments = gci -Directory "C:\Shared" | select name
