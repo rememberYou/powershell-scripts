@@ -29,18 +29,25 @@ Install-WindowsFeature -Name FS-Resource-Manager, RSAT-FSRM-Mgmt
 New-FsrmQuotaTemplate -Name "500 MB limit" -Description "limit usage to 500 MB." -Size 500MB
 
 # Apply template to the Shared Folder
+
+
+Function SetQuota($folder, $limit)
+{
+    New-FsrmQuota -Path "C:\Shared\$folder" -Template "$limit MB limit"
+}
+
 $Departments = gci -Directory "C:\Shared" | select name
 
 ForEach($folder in $Departments)
 {
     $currentFolder = $folder.Name
-    New-FsrmQuota -Path "C:\Shared\$currentFolder" -Template "500 MB limit"
+    SetQuota -folder $currentFolder -limit 500
     if ($currentFolder -ne "Common") {
         $subDepartments = gci -Directory "C:\Shared\$currentFolder" | select name
         ForEach ($folder in $subDepartments)
         {
             $currentSubFolder = $folder.Name
-            New-FsrmQuota -Path "C:\Shared\$currentFolder\$currentSubFolder" -Template "100 MB limit"
+            SetQuota -folder "$currentFolder\$currentSubFolder" -limit 100
         }
     }
 }
