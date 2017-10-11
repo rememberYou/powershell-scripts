@@ -26,7 +26,7 @@
     `Get-ADDomain`
 #>
 
-Import-module .\New-SWRandomPassword.ps1
+Import-Module .\New-SWRandomPassword.ps1
 
 Param(
     [ValidateNotNullOrEmpty()]

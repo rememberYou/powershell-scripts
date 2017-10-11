@@ -11,7 +11,7 @@ you notice any mistakes.
 
 ## Supported roles and features [8/11]
 
-	- [ ] AD (with ADRecycleBin)
+	- [x] AD (with ADRecycleBin)
 	- [x] Backups
 	- [x] Basic Firewall
 	- [x] Basic IPv4 and IPv6
