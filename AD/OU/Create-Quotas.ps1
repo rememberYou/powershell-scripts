@@ -1,7 +1,7 @@
 <#
 .SYNOPSIS
     Creates the quotas for all departments' shared folder.
-    PowerSploit Function: Create_Quotas
+    PowerSploit Function: Create-Quotas
     Author: Terencio Agozzino (@rememberYou)
             Alexandre Ducobu (@Harchytekt)
     License: None
@@ -10,7 +10,7 @@
     Version: 1.0.0
 
 .DESCRIPTION
-    Create_Quotas Creates the quotas for all departments' shared folder.
+    Create-Quotas Creates the quotas for all departments' shared folder.
 
 .NOTES
     Take a look at the "ou-example.csv" file for the specific structure
