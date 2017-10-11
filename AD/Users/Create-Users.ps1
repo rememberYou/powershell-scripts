@@ -26,6 +26,8 @@
     `Get-ADDomain`
 #>
 
+Import-module .\New-SWRandomPassword.ps1
+
 Param(
     [ValidateNotNullOrEmpty()]
     [String]
@@ -59,7 +61,7 @@ Try {
 }
 
 # Can make problem with the password complexity. Disable it with the GPO.
-$RandObj = New-Object System.Random
+# $RandObj = New-Object System.Random
 
 foreach ($user in $csv) {
     $Employees += [Employee]::new($user.Name, $user.Firstname, $user.Description,
@@ -67,8 +69,7 @@ foreach ($user in $csv) {
 
     $San = ($user.Firstname).substring(0, 2) + "." + $user.Name
 
-    $GenPassword=""
-    1..12 | ForEach { $GenPassword = $GenPassword + [char]$RandObj.Next(33,126) }
+    $GenPassword = New-SWRandomPassword -MinPasswordLength 12 -MaxPasswordLength 16 -Count 1
 
     While ($San.length -gt 19) {
 	$San = ($user.Firstname).substring(0, 1) + "." `
@@ -91,13 +92,13 @@ foreach ($user in $csv) {
     -SamAccountName $San -UserPrincipalName "$upn" `
     -GivenName $user.Firstname -Surname $user.Name `
     -EmailAddress $Mail -Description $user.Description `
-    -AccountPassword (ConvertTo-SecureString "$GenPassword" -AsPlainText -Force) `
+    -AccountPassword (ConvertTo-SecureString $GenPassword -AsPlainText -Force) `
     -Enabled $true -Path "$Ou,DC=heh,DC=lan"
 
     If ($User.Department.Contains('/')) {
 	Add-ADGroupMember -Identity "GS_$($user.Department.Split('/')[0])" -Members "$San"
     } Else {
-	Add-ADGroupMember -Identity "GS_$($user.Department)" -Members "$San"
+	Add-ADGroupMember -Identity "GR_$($user.Department)" -Members "$San"
     }
 }
 
