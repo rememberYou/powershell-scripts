@@ -3,6 +3,7 @@
     Installs the Active Directory service and sets a basic AD configuration.
     PowerSploit Function: Conf-AD
     Author: Terencio Agozzino (@rememberYou)
+            Alexandre Ducobu (@Harchytekt)
     License: None
     Required Dependencies: None
     Optional Dependencies: None

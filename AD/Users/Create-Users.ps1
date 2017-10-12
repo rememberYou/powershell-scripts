@@ -26,13 +26,13 @@
     `Get-ADDomain`
 #>
 
-Import-Module .\New-SWRandomPassword.ps1
-
 Param(
     [ValidateNotNullOrEmpty()]
     [String]
     $File
 )
+
+Import-Module .\New-SWRandomPassword.ps1
 
 Class Employee {
     [string] $Name;

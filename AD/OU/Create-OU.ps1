@@ -3,6 +3,7 @@
     Creates Organizational Units according to a ".csv" file.
     PowerSploit Function: Create-OU
     Author: Terencio Agozzino (@rememberYou)
+            Alexandre Ducobu (@Harchytekt)
     License: None
     Required Dependencies: None
     Optional Dependencies: None
