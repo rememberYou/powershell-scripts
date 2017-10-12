@@ -11,17 +11,23 @@ you notice any mistakes.
 
 ## Supported roles and features [8/11]
 
-	- [x] AD (with ADRecycleBin)
-	- [x] Backups
-	- [x] Basic Firewall
-	- [x] Basic IPv4 and IPv6
-	- [x] DHCPv4 and DHCPv6
-	- [x] DNSv4 and DNSv6
-	- [ ] GPO
-	- [x] Self-Signed Certificates
-	- [ ] Authority-Signed Certificates
-	- [x] Shadow Copies
-	- [x] Time Zone
+- [x] AD (with ADRecycleBin)
+- [x] Backups
+- [x] Basic Firewall
+- [x] Basic IPv4 and IPv6
+- [ ] Certificates
+    - [ ] Authority-Signed
+    - [x] Self-Signed
+- [x] DHCPv4 and DHCPv6
+- [x] DNSv4 and DNSv6
+- [ ] GPO
+- [x] Shadow Copies
+- [ ] Share
+    - [ ] Filters
+    - [x] Permissions
+    - [x] Quotas
+    - [x] Scheme
+- [x] Time Zone
 
 ## Usage
 
