@@ -16,6 +16,16 @@
     PS C:\> Conf-DHCP -StartRangeV4 192.168.1.2 -EndRangeV4 192.168.2.254 `
                             -ScopeIDV4 192.168.1.0 -SubnetMaskV4 255.255.0.0 `
                             -DnsServer 192.168.42.1 -ComputerName 'SRVDNSPrimary' `
+                            -DnsDomain 'heh.lan' -LifeTime 2.00:00:00
+
+.EXAMPLE
+    PS C:\> Conf-DHCP -PrefixV6 2001:db8:cafe:10::1 -ComputerName 'SRVDNSPrimary' `
+                            -DnsDomain 'heh.lan' -LifeTime 2.00:00:00
+
+.EXAMPLE
+    PS C:\> Conf-DHCP -StartRangeV4 192.168.1.2 -EndRangeV4 192.168.2.254 `
+                            -ScopeIDV4 192.168.1.0 -SubnetMaskV4 255.255.0.0 `
+                            -DnsServer 192.168.42.1 -ComputerName 'SRVDNSPrimary' `
                             -DnsDomain 'heh.lan' -PrefixV6 2001:db8:cafe:10::1 `
                             -LifeTime 2.00:00:00
 
@@ -77,16 +87,20 @@ Set-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\ServerManager\Roles\12 -Name Con
 Restart-Service DHCPServer
 
 # IPv4
-# Lease format is day.hrs:mins:secs
-Add-DhcpServerv4Scope -Name 'employees scope (IPv4)' -StartRange "$StartRangeV4" -EndRange "$EndRangeV4" -SubnetMask "$SubnetMaskV4" -LeaseDuration "$LifeTime" -Description 'Created for the employees' -ComputerName "$ComputerName" -State Active
-# OptionID 3 stand for Gateway Address
-Set-DhcpServerv4OptionValue -OptionID 3 -Value "$StartRangeV4" -ScopeID "$ScopeIDV4" -ComputerName "$ComputerName"
-Set-DhcpServerv4OptionValue -DnsDomain 'heh.lan' -DnsServer "$DnsServer"
+If (-Not ([string]::IsNullOrEmpty($StartRangeV4))) {
+    # Lease format is day.hrs:mins:secs
+    Add-DhcpServerv4Scope -Name 'employees scope (IPv4)' -StartRange $StartRangeV4 -EndRange $EndRangeV4 -SubnetMask $SubnetMaskV4 -LeaseDuration $LifeTime -Description 'Created for the employees' -ComputerName $ComputerName -State Active
+    # OptionID 3 stand for Gateway Address
+    Set-DhcpServerv4OptionValue -OptionID 3 -Value $StartRangeV4 -ScopeID $ScopeIDV4 -ComputerName $ComputerName
+    Set-DhcpServerv4OptionValue -DnsDomain 'heh.lan' -DnsServer $DnsServer
+}
 
 # IPv6
-# LifeTime format is day.hrs:mins:secs
-Add-DhcpServerv6Scope -Name 'employees scope (IPv6)' -Prefix "$PrefixV6" -PreferredLifeTime "$LifeTime" -ValidLifeTime "$LifeTime" -Description 'Created for the employees' -ComputerName "$ComputerName" -State Active
-Add-DhcpServerv6ExclusionRange -Prefix "$PrefixV6" -StartRange 2001:db8:cafe:10::1 -EndRange 2001:db8:cafe:10::FFFF
-Add-DhcpServerv6ExclusionRange -Prefix "$PrefixV6" -StartRange 2001:db8:cafe:10::1:200 -EndRange 2001:db8:cafe:10:FFFF:FFFF:FFFF:FFFF
-# OptionID 23 stand for DNS
-Set-DhcpServerv6OptionValue -OptionId 23 -Value 2001:db8:cafe:10::1 -ComputerName "$ComputerName"
+If (-Not ([string]::IsNullOrEmpty($PrefixV6))) {
+    # LifeTime format is day.hrs:mins:secs
+    Add-DhcpServerv6Scope -Name 'employees scope (IPv6)' -Prefix $PrefixV6 -PreferredLifeTime $LifeTime -ValidLifeTime $LifeTime -Description 'Created for the employees' -ComputerName $ComputerName -State Active
+    Add-DhcpServerv6ExclusionRange -Prefix $PrefixV6 -StartRange 2001:db8:cafe:10::1 -EndRange 2001:db8:cafe:10::FFFF
+    Add-DhcpServerv6ExclusionRange -Prefix $PrefixV6 -StartRange 2001:db8:cafe:10::1:200 -EndRange 2001:db8:cafe:10:FFFF:FFFF:FFFF:FFFF
+    # OptionID 23 stand for DNS
+    Set-DhcpServerv6OptionValue -OptionId 23 -Value $PrefixV6 -ComputerName $ComputerName
+}
