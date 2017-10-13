@@ -21,8 +21,6 @@ $logAction = New-FsrmAction Event -EventType Information -Body "An user attempte
 # Create File Group
 $allFileGroup = New-FsrmFileGroup -Name "All files" -IncludePattern "*"
 
-
-
 # Create File Screen Template
 $fsTemplate = New-FsrmFileScreenTemplate -Name "Deny All Type of Files" -IncludeGroup "All files" -Notification $logAction -Active
 
