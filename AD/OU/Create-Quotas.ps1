@@ -11,13 +11,6 @@
 
 .DESCRIPTION
     Create-Quotas Creates the quotas for all departments' shared folder.
-
-.NOTES
-    Take a look at the "ou-example.csv" file for the specific structure
-    and change it with yours.
-
-    You can verify the creation of your Organizatinal Units with:
-    `Get-ADOrganizationalUnit -Filter *`
 #>
 
 Install-WindowsFeature -Name FS-Resource-Manager, RSAT-FSRM-Mgmt
