@@ -23,7 +23,7 @@ you notice any mistakes.
 - [ ] GPO
 - [x] Shadow Copies
 - [ ] Share
-    - [ ] Filters
+    - [ ] File screen
     - [x] Permissions
     - [x] Quotas
     - [x] Scheme
