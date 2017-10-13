@@ -9,7 +9,7 @@ you notice any mistakes.
 
 [logo]: Assets/Powershell_black_64.png
 
-## Supported roles and features [8/11]
+## Supported roles and features [9/11]
 
 - [x] AD (with ADRecycleBin)
 - [x] Backups
@@ -22,8 +22,8 @@ you notice any mistakes.
 - [x] DNSv4 and DNSv6
 - [ ] GPO
 - [x] Shadow Copies
-- [ ] Share
-    - [ ] File screen
+- [x] Share
+    - [x] File screen
     - [x] Permissions
     - [x] Quotas
     - [x] Scheme
