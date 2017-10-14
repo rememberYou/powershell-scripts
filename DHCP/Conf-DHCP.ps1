@@ -43,19 +43,15 @@
 #>
 
 Param(
-    [ValidateNotNullOrEmpty()]
     [String]
     $StartRangeV4,
 
-    [ValidateNotNullOrEmpty()]
     [String]
     $EndRangeV4,
 
-    [ValidateNotNullOrEmpty()]
     [String]
     $ScopeIDV4,
 
-    [ValidateNotNullOrEmpty()]
     [String]
     $SubnetMaskV4,
 
@@ -71,7 +67,6 @@ Param(
     [String]
     $DnsDomain,
 
-    [ValidateNotNullOrEmpty()]
     [String]
     $PrefixV6,
 
