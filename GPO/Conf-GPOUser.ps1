@@ -18,10 +18,10 @@
 
 # Set a wallpaper for every users on the same OU.
 Import-Module GroupPolicy
-New-GPO -Name GPO_BG | New-GPLink -Target "OU=All_ICT, DC=heh, DC=lan"
+New-GPO -Name GPO_BG | New-GPLink -Target "OU=Direction, DC=heh, DC=lan"
 Set-GPPrefRegistryValue -Name GPO_BG -Context User -Action Replace `
   -Key "HKCU\Control Panel\Desktop" -ValueName Wallpaper `
-  -Value "C:\Users\Administrator\Documents\My Pictures\Backgrounds\umbrela.jpg" `
+  -Value "\\SRVDNSPrimary\Share\giant.png" `
   -Type String
 
 Invoke-GPUpdate -Force
