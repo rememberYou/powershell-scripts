@@ -13,7 +13,7 @@
     Conf-ADRecycleBin Enables the AD Recycle Bin.
 
 .EXAMPLE
-    PS C:\> Conf-ADRecycleBin -NetbiosName HEH
+    PS C:\> Conf-ADRecycleBin -NetbiosName heh.lan
 #>
 
 Param(
@@ -23,4 +23,4 @@ Param(
 )
 
 Import-module ActiveDirectory
-Enable-ADOptionalFeature 'Recycle Bin Feature' -Scope ForestOrConfigurationSet -Target "$NetbiosName"
+Enable-ADOptionalFeature 'Recycle Bin Feature' -Scope ForestOrConfigurationSet -Target "$NetbiosName" -confirm:$false
