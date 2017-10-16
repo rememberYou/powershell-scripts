@@ -16,6 +16,8 @@
                         -RootDir Direction
 
 .NOTES
+    Be careful, this script only working with `New-SWRandomPassword.ps1`
+
     Take a look at the "users-example.csv" file for the specific structure
     and change it with yours.
 
