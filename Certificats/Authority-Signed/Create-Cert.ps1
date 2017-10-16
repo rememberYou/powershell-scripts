@@ -45,4 +45,13 @@
 #>
 
 Import-Module ServerManager
-Add-WindowsFeature Adcs-Cert-Authority
+Add-WindowsFeature Adcs-Cert-Authority -IncludeManagementTools
+Install-AdcsCertificationAuthority -CAType EnterpriseRootCa `
+  -CryptoProviderName "RSA#Microsoft Software Key Storage Provider" `
+  -KeyLength 2048 -HashAlgorithmName SHA512 `
+  -CACommonName "HEH-CA" -CADistinguishedNameSuffix "DC=heh,DC=lan" `
+  -ValidityPeriod Years -ValidityPeriodUnits 3 -Force
+
+Add-WindowsFeature Adcs-Web-Enrollment
+Install-AdcsWebEnrollment -Force
+Install-WindowsFeature Web-Mgmt-Console
