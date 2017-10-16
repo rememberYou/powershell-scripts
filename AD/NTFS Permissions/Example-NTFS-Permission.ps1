@@ -33,8 +33,32 @@ If (!(Get-SMBShare -Name "Share" -ea 0)) {
 $acl = Get-Acl "C:\Shared"
 $acl.SetAccessRuleProtection($True, $False)
 
-.\Conf-NTFS-Permission -Lan "HEH" -Users "GR_Direction" -Shared "C:\Shared\" -Permission "R/W"
-.\Conf-NTFS-Permission -Lan "HEH" -Users "Users" -Shared "C:\Shared\" -Permission "R/W"
+# By default, all users got Read permissions to the shared folder.
+.\Conf-NTFS-Permission -Lan "HEH" -Users "Users" `
+  -Shared "C:\Shared\" -Permission "R"
+
+# Heads of "Gestion du personnel" and "Recrutement" groups has Read/Write
+# permission on "Ressources humaines" folder.
+.\Conf-NTFS-Permission -Lan "HEH" -Users "Ta.DUPONT" `
+  -Shared "C:\Shared\Ressources humaines" -Permission "R/W"
+.\Conf-NTFS-Permission -Lan "HEH" -Users "Ca.LECLERCQ" `
+  -Shared "C:\Shared\Ressources humaines" -Permission "R/W"
+
+.\Conf-NTFS-Permission -Lan "HEH" -Users "GS_Gestion du personnel" `
+  -Shared "C:\Shared\Ressources humaines\Gestion du personnel" -Permission "R/W"
+.\Conf-NTFS-Permission -Lan "HEH" -Users "GS_Gestion du personnel" `
+  -Shared "C:\Shared\Ressources humaines\Recrutement" -Permission "R"
+
+.\Conf-NTFS-Permission -Lan "HEH" -Users "GS_Recrutement" `
+  -Shared "C:\Shared\Ressources humaines\Recrutement" -Permission "R/W"
+.\Conf-NTFS-Permission -Lan "HEH" -Users "GS_Recrutement" `
+  -Shared "C:\Shared\Ressources humaines\Gestion du personnel" -Permission "R"
+
+# The direction group has Read/Write permission on all folders.
+.\Conf-NTFS-Permission -Lan "HEH" -Users "GR_Direction" `
+  -Shared "C:\Shared\" -Permission "R/W"
+
+# Heads of departments has Read/Write permission on the common folder.
 .\Conf-NTFS-Permission -Lan "HEH" -Users "T.LAECKE",
                                      "Al.Omey",
                                      "Is.COLSON",
@@ -51,12 +75,5 @@ $acl.SetAccessRuleProtection($True, $False)
                                      "Ta.DUPONT",
                                      "Ca.LECLERCQ",
                                      "Ad.SOLITO",
-                                     "Ji.MEYERS" -Shared "C:\Shared\Common" -Permission "R/W"
-.\Conf-NTFS-Permission -Lan "HEH" -Users "GS_Recrutement" -Shared "C:\Shared\Ressources humaines" -Permission "R"
-.\Conf-NTFS-Permission -Lan "HEH" -Users "GS_Gestion du personnel" -Shared "C:\Shared\Ressources humaines" -Permission "R"
-.\Conf-NTFS-Permission -Lan "HEH" -Users "Ta.DUPONT" -Shared "C:\Shared\Ressources humaines" -Permission "R/W"
-.\Conf-NTFS-Permission -Lan "HEH" -Users "Ca.LECLERCQ" -Shared "C:\Shared\Ressources humaines" -Permission "R/W"
-.\Conf-NTFS-Permission -Lan "HEH" -Users "GS_Recrutement" -Shared "C:\Shared\Ressources humaines\Recrutement" -Permission "R/W"
-.\Conf-NTFS-Permission -Lan "HEH" -Users "GS_Gestion du personnel" -Shared "C:\Shared\Ressources humaines\Recrutement" -Permission "R"
-.\Conf-NTFS-Permission -Lan "HEH" -Users "GS_Gestion du personnel" -Shared "C:\Shared\Ressources humaines\Gestion du personnel" -Permission "R/W"
-.\Conf-NTFS-Permission -Lan "HEH" -Users "GS_Recrutement" -Shared "C:\Shared\Ressources humaines\Gestion du personnel" -Permission "R"
+                                     "Ji.MEYERS" `
+  -Shared "C:\Shared\Common" -Permission "R/W"

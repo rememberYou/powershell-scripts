@@ -23,4 +23,5 @@ Param(
 )
 
 Import-module ActiveDirectory
-Enable-ADOptionalFeature 'Recycle Bin Feature' -Scope ForestOrConfigurationSet -Target "$NetbiosName" -confirm:$false
+Enable-ADOptionalFeature 'Recycle Bin Feature' -Scope ForestOrConfigurationSet `
+  -Target "$NetbiosName" -confirm:$false
