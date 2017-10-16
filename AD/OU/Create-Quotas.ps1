@@ -16,7 +16,8 @@
 Install-WindowsFeature -Name FS-Resource-Manager, RSAT-FSRM-Mgmt
 
 # Create Templates
-New-FsrmQuotaTemplate -Name "500 MB limit" -Description "limit usage to 500 MB." -Size 500MB
+New-FsrmQuotaTemplate -Name "500 MB limit" `
+  -Description "Limit usage to 500 MB." -Size 500MB
 
 # Apply template to the Shared Folder
 
@@ -47,7 +48,9 @@ Function SetMail ($folder)
     }
     ElseIf ($folder -eq "Common")
     {
-        $mail = [string]([string]$comm, [string]$fin, [string]$info, [string]$mark, [string]$rd, [string]$rh, [string]$tech, "po.botson@heh.lan")
+        $mail = [string]([string]$comm, [string]$fin, [string]$info,
+			 [string]$mark, [string]$rd, [string]$rh,
+			 [string]$tech, "po.botson@heh.lan")
     }
     ElseIf ($folder -eq "Direction")
     {
@@ -143,12 +146,19 @@ Function SetMail ($folder)
 Function SetQuota($folder, $limit)
 {
     $mail = SetMail -folder $folder
-    $mailAction = New-FsrmAction Email -MailTo $mail -Subject "Warning: Approaching storage limit" -Body "The users are about to reach the end of the available storage in the $folder folder ($limit%)."
-    $logAction = New-FsrmAction Event -EventType Information -Body "The $folder folder is mostly full ($limit%)." -RunLimitInterval 60
-    $80Threshold = New-FsrmQuotaThreshold -Percentage 80 -Action $mailAction
-    $90Threshold = New-FsrmQuotaThreshold -Percentage 90 -Action $mailAction,$logAction
-    $100Threshold = New-FsrmQuotaThreshold -Percentage 100 -Action $mailAction,$logAction
-    New-FsrmQuota -Path "C:\Shared\$folder" -Template "$limit MB limit" -Threshold $80Threshold,$90Threshold,$100Threshold
+    $mailAction = New-FsrmAction Email -MailTo $mail `
+      -Subject "Warning: Approaching storage limit" `
+      -Body "The users are about to reach the end of the available storage in the $folder folder ($limit%)."
+    $logAction = New-FsrmAction Event -EventType Information `
+      -Body "The $folder folder is mostly full ($limit%)." -RunLimitInterval 60
+    $80Threshold = New-FsrmQuotaThreshold -Percentage 80 `
+      -Action $mailAction
+    $90Threshold = New-FsrmQuotaThreshold -Percentage 90 `
+      -Action $mailAction, $logAction
+    $100Threshold = New-FsrmQuotaThreshold -Percentage 100 `
+      -Action $mailAction,$logAction
+    New-FsrmQuota -Path "C:\Shared\$folder" -Template "$limit MB limit" `
+      -Threshold $80Threshold,$90Threshold,$100Threshold
 }
 
 $Departments = gci -Directory "C:\Shared" | select name
