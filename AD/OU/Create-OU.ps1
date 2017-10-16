@@ -54,7 +54,8 @@ foreach ($ou in $csv) {
     }
 
     New-ADOrganizationalUnit -Name $ou.Name -Path $Path `
-      -Description "$($ou.Name) Organizational Unit"
+      -Description "$($ou.Name) Organizational Unit" `
+      -ProtectedFromAccidentalDeletion $true
 
     If ($ou.Parent -eq "") {
 	New-ADGroup "GR_$($ou.Name)" -Path "OU=$($ou.Name),$Path" `
