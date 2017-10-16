@@ -10,7 +10,7 @@
     Version: 1.0.0
 
 .DESCRIPTION
-    Create-Cert creates certificates to signing scripts.
+    Create-SelfCert creates certificates to signing scripts.
 
 .EXAMPLE
     PS C:\> Create-Cert
