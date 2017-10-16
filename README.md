@@ -34,6 +34,11 @@ you notice any mistakes.
 After installing a Windows server, execute scripts according to the desired
 services to install.
 
+Before use any script, specify the new execution policy to avoid errors related
+to script signatures.
+
+	PS> Set-ExecutionPolicy Bypass
+
 Be careful that the scripts are made for Windows Server 2016 and may not work
 for earlier version.
 
@@ -49,3 +54,9 @@ Example for installing DHCP Server Role with Windows PowerShell:
                             -DnsServer 192.168.42.1 -ComputerName 'SRVDNSPrimary' `
                             -DnsDomain 'heh.lan' -PrefixV6 2001:db8:cafe:10::1 `
                             -LifeTime 2.00:00:00
+
+After setting up the scripts, turn back the execution policy to `AllSigned` if
+you have set up the possibility for users to sign their scripts (or
+`Restricted`).
+
+	PS> Set-ExecutionPolicy AllSigned
