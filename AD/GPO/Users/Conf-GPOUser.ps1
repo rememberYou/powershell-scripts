@@ -1,6 +1,6 @@
 <#
 .SYNOPSIS
-    Configures the GPO for the every users.
+    Configures the GPO for every users of the AD.
     PowerSploit Function: Conf-GPOUser
     Author: Terencio Agozzino (@rememberYou)
             Alexandre Ducobu (@Harchytekt)
@@ -10,7 +10,7 @@
     Version: 1.0.0
 
 .DESCRIPTION
-    Conf-GPOUser Configures the GPO for all the users.
+    Conf-GPOUser Configures the GPO for all the users of the AD.
 
 .EXAMPLE
     PS C:\> Conf-GPO
