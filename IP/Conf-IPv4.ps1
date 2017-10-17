@@ -24,10 +24,10 @@
     `Get-NetIPInterface`
 
     You can verify your IP addresses configurations with:
-    `netsh interface ipv4 show addresses`
+    `Netsh interface ipv4 show addresses`
 
     You can verify your DNS server addresses configurations with:
-    `netsh interface ipv4 show dnsservers`
+    `Netsh interface ipv4 show dnsservers`
 #>
 
 Param(

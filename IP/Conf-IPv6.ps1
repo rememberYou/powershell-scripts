@@ -28,10 +28,10 @@
     `Get-NetIPInterface -AddressFamily IPv6 | fl InterfaceAlias, InterfaceIndex, IPv6Address`
 
     You can verify your IP addresses configurations with:
-    `netsh interface ipv6 show addresses`
+    `Netsh interface ipv6 show addresses`
 
     You can verify your DNS server addresses configurations with:
-    `netsh interface ipv6 show dnsservers`
+    `Netsh interface ipv6 show dnsservers`
 
     You can verify make a IPv6 ping with `Ping -6 <IPv6 ADDRESS>
 
