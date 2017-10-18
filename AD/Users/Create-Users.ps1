@@ -62,9 +62,6 @@ Try {
     Write-Host "Can't load the file: $file" -Foreground Red
 }
 
-# Can make problem with the password complexity. Disable it with the GPO.
-# $RandObj = New-Object System.Random
-
 foreach ($user in $csv) {
     $Employees += [Employee]::new($user.Name, $user.Firstname, $user.Description,
 				      $user.Department)
@@ -96,6 +93,8 @@ foreach ($user in $csv) {
     -EmailAddress $Mail -Description $user.Description `
     -AccountPassword (ConvertTo-SecureString $GenPassword -AsPlainText -Force) `
     -Enabled $true -Path "$Ou,DC=heh,DC=lan"
+
+    $User.Department = $User.Department -replace " ", '_'
 
     If ($User.Department.Contains('/')) {
 	Add-ADGroupMember -Identity "GS_$($user.Department.Split('/')[0])" -Members "$San"
