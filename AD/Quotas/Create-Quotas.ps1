@@ -32,7 +32,7 @@ $rh = "ca.leclercq@heh.lan", "ca.leclercq@heh.lan"
 $tech = "ad.solito@heh.lan", "ji.meyers@heh.lan"
 
 # Set the mail address(es) for the chosen folder
-Function SetMail ($folder)
+Function SetMail($folder)
 {
     If ($folder -eq "Commerciaux")
     {
@@ -163,7 +163,7 @@ Function SetQuota($folder, $limit)
 
 $Departments = gci -Directory "C:\Shared" | select name
 
-ForEach($folder in $Departments)
+ForEach ($folder in $Departments)
 {
     $currentFolder = $folder.Name
     SetQuota -folder $currentFolder -limit 500
