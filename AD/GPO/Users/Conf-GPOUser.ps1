@@ -20,8 +20,13 @@
 Import-Module GroupPolicy
 New-GPO -Name GPO_BG | New-GPLink -Target "OU=Direction, DC=heh, DC=lan"
 Set-GPPrefRegistryValue -Name GPO_BG -Context User -Action Replace `
-  -Key "HKCU\Control Panel\Desktop" -ValueName Wallpaper `
-  -Value "\\SRVDNSPrimary\Share\giant.png" `
+  -Key "HKCU\Control Panel\Desktop" -ValueName WallPaper `
+  -Value "\\SRVDNSPrimary\Share\giant.jpg" `
   -Type String
 
 Invoke-GPUpdate -Force
+
+Set-GPPrefRegistryValue -Name GPO_BG -Context User -Action Create `
+  -Key "HKCU\Control Panel\Desktop" -ValueName WallPaper `
+  -Value "\\SRVDNSPrimary\Share\giant.jpg" `
+  -Type String
