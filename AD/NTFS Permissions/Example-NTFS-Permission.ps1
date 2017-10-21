@@ -44,15 +44,15 @@ $acl.SetAccessRuleProtection($True, $False)
 .\Conf-NTFS-Permission -Lan "HEH" -Users "Ca.LECLERCQ" `
   -Shared "C:\Shared\Ressources_Humaines" -Permission "R/W"
 
-.\Conf-NTFS-Permission -Lan "HEH" -Users "GS_Gestion du Personnel" `
-  -Shared "C:\Shared\Ressources_Humaines\Gestion du personnel" -Permission "R/W"
-.\Conf-NTFS-Permission -Lan "HEH" -Users "GS_Gestion du Personnel" `
+.\Conf-NTFS-Permission -Lan "HEH" -Users "GS_Gestion_du_Personnel" `
+  -Shared "C:\Shared\Ressources_Humaines\Gestion du Personnel" -Permission "R/W"
+.\Conf-NTFS-Permission -Lan "HEH" -Users "GS_Gestion_du_Personnel" `
   -Shared "C:\Shared\Ressources_Humaines\Recrutement" -Permission "R"
 
 .\Conf-NTFS-Permission -Lan "HEH" -Users "GS_Recrutement" `
   -Shared "C:\Shared\Ressources_Humaines\Recrutement" -Permission "R/W"
 .\Conf-NTFS-Permission -Lan "HEH" -Users "GS_Recrutement" `
-  -Shared "C:\Shared\Ressources_Humaines\Gestion du personnel" -Permission "R"
+  -Shared "C:\Shared\Ressources_Humaines\Gestion du Personnel" -Permission "R"
 
 # The direction group has Read/Write permission on all folders.
 .\Conf-NTFS-Permission -Lan "HEH" -Users "GR_Direction" `

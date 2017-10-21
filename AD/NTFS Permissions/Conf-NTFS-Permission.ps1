@@ -60,7 +60,7 @@ Function SetAcl
 		If ($user -eq "Users") {
 		    $rule = New-Object System.Security.AccessControl.FileSystemAccessRule("Users", $Permission, "ContainerInherit, ObjectInherit", "None", "Allow")
 		} Else {
-			$rule = New-Object System.Security.AccessControl.FileSystemAccessRule("$Lan\$user", $Permission, "ContainerInherit, ObjectInherit", "None", "Allow")
+			$rule = New-Object System.Security.AccessControl.FileSystemAccessRule("$user", $Permission, "ContainerInherit, ObjectInherit", "None", "Allow")
 		}
 		$acl.AddAccessRule($rule)
     }
