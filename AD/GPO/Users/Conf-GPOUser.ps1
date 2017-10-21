@@ -14,6 +14,9 @@
 
 .EXAMPLE
     PS C:\> Conf-GPO
+
+.NOTES
+    You will have to restart your client 2 or 3 times for the wallpaper to be displayed
 #>
 
 # Set a wallpaper for every users on the same OU.
