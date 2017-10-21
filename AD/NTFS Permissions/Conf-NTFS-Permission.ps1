@@ -42,11 +42,11 @@ $acl = Get-Acl "$($Shared)"
 
 Function GetPermission {
     If ($Permission -eq "R") {
-	$Permission = "Read"
+		$Permission = "Read"
     } ElseIf ($Permission -eq "W") {
-	$Permission = "Write"
+		$Permission = "Write"
     } Else {
-	$Permission = "Read, Write"
+		$Permission = "Read, Write"
     }
     return $Permission
 }
@@ -57,16 +57,12 @@ Function SetAcl
 
     ForEach($user in $Users)
     {
-	If ($user -eq "Users") {
-	    $rule = New-Object System.Security.AccessControl.FileSystemAccessRule("Users", $Permission,
-										  "ContainerInherit, ObjectInherit",
-										  "None", "Allow")
-	} Else {
-	    $rule = New-Object System.Security.AccessControl.FileSystemAccessRule("$Lan\$user", $Permission,
-										  "ContainerInherit, ObjectInherit",
-										  "None", "Allow")
-	}
-	$acl.AddAccessRule($rule)
+		If ($user -eq "Users") {
+		    $rule = New-Object System.Security.AccessControl.FileSystemAccessRule("Users", $Permission, "ContainerInherit, ObjectInherit", "None", "Allow")
+		} Else {
+			$rule = New-Object System.Security.AccessControl.FileSystemAccessRule("$Lan\$user", $Permission, "ContainerInherit, ObjectInherit", "None", "Allow")
+		}
+		$acl.AddAccessRule($rule)
     }
 
     Set-Acl $Shared $acl

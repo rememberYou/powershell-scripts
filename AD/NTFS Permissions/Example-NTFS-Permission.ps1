@@ -24,7 +24,7 @@
     `Get-Acl "C:\path-to-folder" | Format-List`
 #>
 
-Import-Module .\Conf-NTFS-Permission.ps1
+#Import-Module .\Conf-NTFS-Permission.ps1
 
 If (!(Get-SMBShare -Name "Share" -ea 0)) {
     New-SMBShare -Name "Share" -Path "C:\Shared"
@@ -40,19 +40,19 @@ $acl.SetAccessRuleProtection($True, $False)
 # Heads of "Gestion du personnel" and "Recrutement" groups has Read/Write
 # permission on "Ressources humaines" folder.
 .\Conf-NTFS-Permission -Lan "HEH" -Users "Ta.DUPONT" `
-  -Shared "C:\Shared\Ressources_humaines" -Permission "R/W"
+  -Shared "C:\Shared\Ressources_Humaines" -Permission "R/W"
 .\Conf-NTFS-Permission -Lan "HEH" -Users "Ca.LECLERCQ" `
-  -Shared "C:\Shared\Ressources_humaines" -Permission "R/W"
+  -Shared "C:\Shared\Ressources_Humaines" -Permission "R/W"
 
-.\Conf-NTFS-Permission -Lan "HEH" -Users "GS_Gestion du personnel" `
-  -Shared "C:\Shared\Ressources_humaines\Gestion du personnel" -Permission "R/W"
-.\Conf-NTFS-Permission -Lan "HEH" -Users "GS_Gestion du personnel" `
-  -Shared "C:\Shared\Ressources_humaines\Recrutement" -Permission "R"
+.\Conf-NTFS-Permission -Lan "HEH" -Users "GS_Gestion du Personnel" `
+  -Shared "C:\Shared\Ressources_Humaines\Gestion du personnel" -Permission "R/W"
+.\Conf-NTFS-Permission -Lan "HEH" -Users "GS_Gestion du Personnel" `
+  -Shared "C:\Shared\Ressources_Humaines\Recrutement" -Permission "R"
 
 .\Conf-NTFS-Permission -Lan "HEH" -Users "GS_Recrutement" `
-  -Shared "C:\Shared\Ressources_humaines\Recrutement" -Permission "R/W"
+  -Shared "C:\Shared\Ressources_Humaines\Recrutement" -Permission "R/W"
 .\Conf-NTFS-Permission -Lan "HEH" -Users "GS_Recrutement" `
-  -Shared "C:\Shared\Ressources_humaines\Gestion du personnel" -Permission "R"
+  -Shared "C:\Shared\Ressources_Humaines\Gestion du personnel" -Permission "R"
 
 # The direction group has Read/Write permission on all folders.
 .\Conf-NTFS-Permission -Lan "HEH" -Users "GR_Direction" `
