@@ -16,7 +16,10 @@
     PS C:\> Create-AuthorityCert
 
 .NOTES
-    Navigate to http://<IP of your server>/certsvr to request a certificate
+    Activate HTTPS for Certificates: https://social.technet.microsoft.com/wiki/contents/articles/12039.active-directory-certificate-services-ad-cs-error-in-order-to-complete-certificate-enrollment-the-web-site-for-the-ca-must-be-configured-to-use-https-authentication.aspx
+
+    Navigate to https://<hostName>.<domainName>/certsvr to request a certificate
+    Example: https://srvdnsprimary.heh.lan/certsrv/
 #>
 
 Import-Module ServerManager
