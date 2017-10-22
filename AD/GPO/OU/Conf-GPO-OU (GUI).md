@@ -16,7 +16,7 @@
     1. The action: **Update**
     2. The location of the shared folder
     3. Check **Reconnect** and choose the **Drive letter**
-    4. Finish by choosing **Show this drive** and **Show all drives**
+    4. Finish by choosing **Show this drive** and **Show all drives**  
     Figure: ![Drive Maps](Drive_Maps.png)
 7. You can click on **Apply** and/or **OK**
 8. Close the windows and **restart** your client
