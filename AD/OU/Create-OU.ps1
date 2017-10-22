@@ -63,11 +63,11 @@ foreach ($ou in $csv) {
 	New-ADGroup "GR_$SuffixeGroupName" -Path "OU=$($ou.Name),$Path" `
 	  -Description "$($ou.Name) Group" -GroupScope Global
     } Else {
-	$ou.Parent = $ou.Parent -replace " ", '_'
+	$ParentName = $ou.Parent -replace " ", '_'
 
 	New-ADGroup "GS_$SuffixeGroupName" -Path "OU=$($ou.Name),$Path" `
 	  -Description "$($ou.Name) Group" -GroupScope Global
-	Add-ADGroupMember -Identity "GR_$($ou.Parent)" -Members "GS_$SuffixeGroupName"
+	Add-ADGroupMember -Identity "GR_$ParentName" -Members "GS_$SuffixeGroupName"
     }
 
     If ($csv.IndexOf($ou) -eq 0) {
