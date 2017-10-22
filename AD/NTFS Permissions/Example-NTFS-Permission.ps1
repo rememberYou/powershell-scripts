@@ -13,55 +13,47 @@
     Example-NTFS-Permission Gives an example of utilisation of the
     "Conf-NTFS-Permission" script.
 
-.EXAMPLE
-    PS C:\> Conf-NTFS-Permission -Lan HEH -User Ca.LECLERCQ -Shared C:\Shared\Common -Permission R/W
-
-.EXAMPLE
-    PS C:\> Conf-NTFS-Permission -Lan "HEH" -Users [Ca.LECLERCQ, Ta.DUPONT] "C:\Shared\Common" -Permission "R/W"
-
 .NOTES
     You can verify NTFS permissions with:
     `Get-Acl "C:\path-to-folder" | Format-List`
 #>
 
-#Import-Module .\Conf-NTFS-Permission.ps1
+Import-Module .\Conf-NTFS-Permission.ps1
 
 If (!(Get-SMBShare -Name "Share" -ea 0)) {
     New-SMBShare -Name "Share" -Path "C:\Shared"
 }
 
 $acl = Get-Acl "C:\Shared"
-$acl.SetAccessRuleProtection($True, $False)
+$acl.SetAccessRuleProtection($False, $True)
 
-# By default, all users got Read permissions to the shared folder.
-.\Conf-NTFS-Permission -Lan "HEH" -Users "Users" `
-  -Shared "C:\Shared\" -Permission "R"
+# Everyone from the "GR_Ressources_Humaines" group can read the subfolders.
+.\Conf-NTFS-Permission -Lan "HEH" -Users "GR_Ressources_Humaines" `
+  -Shared "C:\Shared\Ressources Humaines\Recrutement" -Permission "R"
 
 # Heads of "Gestion du personnel" and "Recrutement" groups has Read/Write
 # permission on "Ressources humaines" folder.
 .\Conf-NTFS-Permission -Lan "HEH" -Users "Ta.DUPONT" `
-  -Shared "C:\Shared\Ressources_Humaines" -Permission "R/W"
+  -Shared "C:\Shared\Ressources Humaines" -Permission "R/W"
 .\Conf-NTFS-Permission -Lan "HEH" -Users "Ca.LECLERCQ" `
-  -Shared "C:\Shared\Ressources_Humaines" -Permission "R/W"
+  -Shared "C:\Shared\Ressources Humaines" -Permission "R/W"
 
 .\Conf-NTFS-Permission -Lan "HEH" -Users "GS_Gestion_du_Personnel" `
-  -Shared "C:\Shared\Ressources_Humaines\Gestion du Personnel" -Permission "R/W"
-.\Conf-NTFS-Permission -Lan "HEH" -Users "GS_Gestion_du_Personnel" `
-  -Shared "C:\Shared\Ressources_Humaines\Recrutement" -Permission "R"
-
+  -Shared "C:\Shared\Ressources Humaines\Gestion du Personnel" -Permission "R/W"
 .\Conf-NTFS-Permission -Lan "HEH" -Users "GS_Recrutement" `
-  -Shared "C:\Shared\Ressources_Humaines\Recrutement" -Permission "R/W"
-.\Conf-NTFS-Permission -Lan "HEH" -Users "GS_Recrutement" `
-  -Shared "C:\Shared\Ressources_Humaines\Gestion du Personnel" -Permission "R"
+  -Shared "C:\Shared\Ressources Humaines\Recrutement" -Permission "R/W"
 
 # The direction group has Read/Write permission on all folders.
 .\Conf-NTFS-Permission -Lan "HEH" -Users "GR_Direction" `
   -Shared "C:\Shared\" -Permission "R/W"
 
+# By default, all users got Read permissions on the common shared folder.
+.\Conf-NTFS-Permission -Lan "HEH" -Users "Users" `
+  -Shared "C:\Shared\Common\" -Permission "R"
+
 # Heads of departments has Read/Write permission on the common folder.
-.\Conf-NTFS-Permission -Lan "HEH" -Users "T.LAECKE",
+.\Conf-NTFS-Permission -Lan "HEH" -Users "Te.LAECKE",
                                      "Al.OMEY",
-                                     "Al.DUCOBU",
                                      "Is.COLSON",
                                      "Do.GHYS",
                                      "Vi.DUFOUR",
