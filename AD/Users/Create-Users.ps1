@@ -71,14 +71,28 @@ foreach ($user in $csv) {
     $GenPassword = New-SWRandomPassword -MinPasswordLength 12 -MaxPasswordLength 16 -Count 1
 
     While ($San.length -gt 19) {
-	$San = ($user.Firstname).substring(0, 1) + "." `
+	$San = ($user.Firstname).substring(0, 2) + "." `
 	  + $user.Name.substring(0, ($user.Name).length / 2)
     }
 
     If ($San.Contains(" ")) {
-	$San = ($user.Firstname).substring(0, 1) + "." `
+	$San = ($user.Firstname).substring(0, 2) + "." `
 	  + $user.Name.Split(" ")[-1]
     }
+
+    If ($San.Contains("é")) {
+	$San = $San -replace "é", "e"
+    }
+
+    If ($San.Contains("è")) {
+	$San = $San -replace "è", "e"
+    }
+
+    If ($San.Contains("ê")) {
+	$San = $San -replace "ê", "e"
+    }
+
+    # You should  add more conditions if needed to replace accents on letters...
 
     $Mail = ("$($user.Firstname).$($user.Name)@heh.lan" -replace " ", "").ToLower()
 
