@@ -17,6 +17,7 @@
 
 .NOTES
     Activate HTTPS for Certificates: https://social.technet.microsoft.com/wiki/contents/articles/12039.active-directory-certificate-services-ad-cs-error-in-order-to-complete-certificate-enrollment-the-web-site-for-the-ca-must-be-configured-to-use-https-authentication.aspx
+    Note: You might need to restart your client for the certificate to be synchronised.
 
     Navigate to https://<hostName>.<domainName>/certsvr to request a certificate
     Example: https://srvdnsprimary.heh.lan/certsrv/
