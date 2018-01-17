@@ -13,7 +13,8 @@
     Create-OU Creates Organizational Units according to a ".csv" file.
 
 .EXAMPLE
-    PS C:\> Create-OU -File C:\Users\Administrator\Desktop\ou-example.csv
+    PS C:\> Create-OU -File C:\Users\Administrator\Desktop\ou-example.csv `
+                      -Path DC=heh,DC=lan
 
 .NOTES
     Take a look at the "ou-example.csv" file for the specific structure
@@ -26,7 +27,11 @@
 Param(
     [ValidateNotNullOrEmpty()]
     [String]
-    $File
+    $File,
+
+    [ValidateNotNullOrEmpty()]
+    [String]
+    $Path
 )
 
 New-Item "C:\Shared\Common" -Type Directory
@@ -42,7 +47,7 @@ Try {
 
 foreach ($ou in $csv) {
 
-    $Path = "DC=heh,DC=lan"
+    $Path = "$Path"
 
     If ($csv.IndexOf($ou) -eq 0) {
         $DirRoot = "C:\Shared\"
@@ -50,7 +55,7 @@ foreach ($ou in $csv) {
     }
 
     If ($ou.Parent -ne "") {
-        $Path = "OU=$($ou.Parent),DC=heh,DC=lan"
+        $Path = "OU=$($ou.Parent),$Path"
     }
 
     New-ADOrganizationalUnit -Name $ou.Name -Path $Path `
