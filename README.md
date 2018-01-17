@@ -1,4 +1,5 @@
-# ![logo][] PowerShell Scripts
+![Powershell logo](Assets/Powershell_black_64.png "Powershell logo") PowerShell Scripts
+===============================
 
 Useful PowerShell scripts to configure a basic Windows Server 2016. The purpose
 of this repository is to have a little working configuration that can be used to
@@ -7,9 +8,9 @@ set up your own server.
 Feel free to use the code for your own purposes and contribute to this repository if
 you notice any mistakes.
 
-[logo]: Assets/Powershell_black_64.png
+--------------------
 
-## Supported roles and features [9/11]
+### Supported roles and features [9/11] ###
 
 - [x] AD (with ADRecycleBin)
 - [x] Backups
@@ -29,7 +30,9 @@ you notice any mistakes.
     - [x] Scheme
 - [x] Time Zone
 
-## Usage
+--------------------
+
+### Usage ###
 
 After installing a Windows server, execute scripts according to the desired
 services to install.
