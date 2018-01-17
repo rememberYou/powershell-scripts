@@ -28,8 +28,13 @@ If (!(Get-SMBShare -Name "Share" -ea 0)) {
     New-SMBShare -Name "Share" -Path "C:\Shared"
 }
 
+# Everyone from the "GR_Ressources_Humaines" group can read the subfolders.
+.\Conf-NTFS-Permission -Lan "HEH" -Users "GR_Ressources_Humaines" `
+  -Shared "C:\Shared\Ressources Humaines" -Permission "R"
+
 $acl = Get-Acl "C:\Shared"
-$acl.SetAccessRuleProtection($False, $True)
+$acl.SetAccessRuleProtection($True, $True)
+Set-Acl -Path "C:\Shared" -AclObject $acl
 
 # [ RESSOURCES HUMAINES ]
 

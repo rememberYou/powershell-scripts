@@ -13,7 +13,7 @@
     Conf-NTFS-Permission Configures the NTFS permissions.
 
 .EXAMPLE
-    PS C:\> Conf-NTFS-Permission -Lan HEH -User Ca.LECLERCQ -Shared C:\Shared\Common -Permission R/W
+    PS C:\> Conf-NTFS-Permission -Lan HEH -Users Ca.LECLERCQ -Shared C:\Shared\Common -Permission R/W
 
 .NOTES
     You can verify NTFS permissions with:
@@ -59,6 +59,7 @@ Function SetAcl
     {
 		If ($user -eq "Users") {
 		    $rule = New-Object System.Security.AccessControl.FileSystemAccessRule("Users", $Permission, "ContainerInherit, ObjectInherit", "None", "Allow")
+		echo "ASDKSADOIJSDOIJSSAOIDJAOSIJDSOIJSAOIDJAOISD"
 		} Else {
 			$rule = New-Object System.Security.AccessControl.FileSystemAccessRule("$user", $Permission, "ContainerInherit, ObjectInherit", "None", "Allow")
 		}
