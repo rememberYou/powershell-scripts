@@ -68,4 +68,4 @@ you have set up the possibility for users to sign their scripts (or
 
 ### License ###
 
-Code is under the [GNU General Public License v3.0](https://www.gnu.org/licenses/gpl.html).
+Code is under the [GNU General Public License v3.0](https://www.gnu.org/licenses/gpl.html)
