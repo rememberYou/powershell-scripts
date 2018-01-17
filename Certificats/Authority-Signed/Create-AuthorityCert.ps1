@@ -13,7 +13,7 @@
     Create-AuthorityCert creates authority-signed certificates to signing scripts.
 
 .EXAMPLE
-    PS C:\> Create-AuthorityCert
+    PS C:\> Create-AuthorityCert -Path "DC=heh,DC=lan"
 
 .NOTES
     Activate HTTPS for Certificates: https://social.technet.microsoft.com/wiki/contents/articles/12039.active-directory-certificate-services-ad-cs-error-in-order-to-complete-certificate-enrollment-the-web-site-for-the-ca-must-be-configured-to-use-https-authentication.aspx
@@ -23,12 +23,18 @@
     Example: https://srvdnsprimary.heh.lan/certsrv/
 #>
 
+Param(
+    [ValidateNotNullOrEmpty()]
+    [String]
+    $Path
+)
+
 Import-Module ServerManager
 Add-WindowsFeature Adcs-Cert-Authority -IncludeManagementTools
 Install-AdcsCertificationAuthority -CAType EnterpriseRootCa `
   -CryptoProviderName "RSA#Microsoft Software Key Storage Provider" `
   -KeyLength 2048 -HashAlgorithmName SHA512 `
-  -CACommonName "HEH-CA" -CADistinguishedNameSuffix "DC=heh,DC=lan" `
+  -CACommonName "HEH-CA" -CADistinguishedNameSuffix $Path `
   -ValidityPeriod Years -ValidityPeriodUnits 3 -Force
 
 Add-WindowsFeature Adcs-Web-Enrollment
